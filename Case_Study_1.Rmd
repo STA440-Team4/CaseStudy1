@@ -15,7 +15,7 @@ Interim report (9/7): produce a 5 page (maximum) report using R markdown that cl
 
 #Library of Packages
 
-```{r}
+```{r, include=FALSE}
 library(dplyr)
 library(magrittr)
 ```
@@ -47,7 +47,7 @@ At the start of our data cleaning, we read in the .csv file with birth weight da
 
 To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
 
-#Numerical Variables: Age, gestation, plurality, parity
+#Continous Variables: Age, gestation, plurality, parity
 
 ```{r, cache = TRUE}
 # Parity
@@ -61,7 +61,13 @@ The plots also show relationships between the variables themselves. We visually 
 
 #Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
-##Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
+##Average Number Of Cigarettes Smoked Per Day Variables
+
+We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. Thinking about it this way, the numbers between the multiples now seemed strange! 
+
+In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers, and between mothers who smoked a little and a lot. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
+
+###Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
 ```{r}
 bdclean$CIGPN[bdclean$CIGPN == 0] = "0"
 bdclean$CIGPN[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="1-20"
@@ -75,7 +81,7 @@ Three Months Prior to Pregnancy", ylab = "Birthweight in Grams")
 ```
 
 
-##Average number of Cigarettes Smoked per Day First Three Months of Pregnancy
+###Average number of Cigarettes Smoked per Day First Three Months of Pregnancy
 ```{r}
 bdclean$CIGFN[bdclean$CIGFN == 0] = "0"
 bdclean$CIGFN[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="1-20"
@@ -89,10 +95,10 @@ First Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ```
 
 
-##Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
+###Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
 ```{r}
 bdclean$CIGSN[bdclean$CIGSN == 0] = "0"
-bdclean$CIGSN[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="One pack or less"
+bdclean$CIGSN[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="1-20"
 bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
 bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
 bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
@@ -103,7 +109,7 @@ boxplot(BWTG_C~CIGSN, data = bdclean, xlab = "Average number of Cigarettes Smoke
 Second Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ```
 
-##Average number of Cigarettes Smoked per Day Third or Last Trimester
+###Average number of Cigarettes Smoked per Day Third or Last Trimester
 
 ```{r}
 bdclean$CIGLN[bdclean$CIGLN == 0] = "0"
@@ -145,7 +151,7 @@ boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother"
 summary(aov(BWTG_C ~ as.factor(MRACER), data = bdclean))
 ```
 
-From this boxplot it seems like the mean birthweight is quite consistent throughout all the categories. For the races that have more data points than others, the standard deviations are larger. Because of these observations we decided to do an ANOVA test (and it appears from the results that at least one mean is significantly different from the others, which suggests there could be a relationship between birthweight and the race of mother). It will make sense to figure out which race deviates most from others (#TODO). Currently it seems like race of mother would be a valuable predictor of birthweight.
+From this boxplot it seems like the average birthweight is consistent throughout all the categories of mother's race, except that African mothers on average give birth to slightly lighter babies than mothers of other races. Because of these observations we decided to do an ANOVA test (and it appears from the results that at least one mean is significantly different from the others, which suggests there could be a relationship between birthweight and the race of mother). It will make sense to figure out which race deviates most from others in this aspect(#TODO). Currently we decided to keep race of mother as categorical predictor of birthweight.
 
 ##Boxplot: hispanic origin of mother vs birthweight
 ```{r}
@@ -154,20 +160,8 @@ boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origi
 summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 ```
 
-Similarly from the box plot mean birthweight appears to be consistent across different categories of different sub-categories of mother's hispanic origin. Depending on the number of data points, standard deviation varies among the categories. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. It will make sense to figure out which category deviates most from others (#TODO). Currently it seems like hispanic origin of mother would be a valuable predictor of birthweight.
+Similarly from the box plot average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will make sense to figure out which category deviates most from others (#TODO). We decided to use hispanic origin of mother as a categorical variable in our model. 
 
-
-#Average Number Of Cigarettes Smoked Per Day Variables
-
-We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. Thinking about it this way, the numbers between the multiples now seemed strange! 
-
-In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers, and between mothers who smoked a little and a lot. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
-
-```{r}
-
-```
-
-Our findings show that there is a ___ relationship between...
 
 #Linear Regression Model 
 
