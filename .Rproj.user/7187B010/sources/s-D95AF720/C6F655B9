@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "4195293043",
+    "hash" : "0",
     "id" : "C6F655B9",
-    "lastKnownWriteTime" : 1536110790,
-    "last_content_update" : 1536110790154,
+    "lastKnownWriteTime" : 1536113929,
+    "last_content_update" : 1536113929,
     "path" : "~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1/Case_Study_1.Rmd",
     "project_path" : "Case_Study_1.Rmd",
     "properties" : {
-        "cursorPosition" : "79,3",
-        "scrollLine" : "60"
+        "cursorPosition" : "170,0",
+        "scrollLine" : "158"
     },
     "relative_order" : 3,
     "source_on_save" : false,
