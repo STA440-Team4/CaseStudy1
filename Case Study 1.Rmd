@@ -32,6 +32,12 @@ birth_data$BWTG_C[birth_data$BWTG_C<500]=NA
 bdclean=na.omit(birth_data)
 ```
 
+```{r}
+# Parity
+pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
+
+```
+
 #Factors Associated with Birth Weight
 
 ```{r}
