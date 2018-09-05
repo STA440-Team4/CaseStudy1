@@ -137,7 +137,6 @@ bdclean$CIGLN_bucket[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
 boxplot(BWTG_C~CIGLN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (dichotomized)", ylab = "Birthweight in Grams")
 
 boxplot(BWTG_C~CIGLN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (in bucket)", ylab = "Birthweight in Grams")
-
 ```
 
 ##Boxplot: Gender of Child vs Birthweight
