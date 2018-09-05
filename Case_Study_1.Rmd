@@ -55,11 +55,6 @@ pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 
 #Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
-```{r}
-
-```
-
-
 ##Boxplot: gender of child vs birthweight
 ```{r}
 males = subset(bdclean, male==1)
@@ -74,10 +69,20 @@ boxplot(BWTG~male,col="blue",ylab="Birthweight (grams)",xlab="Gender (female = 0
 boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother")
 ```
 
+```{r}
+summary(aov(BWTG_C ~ as.factor(MRACER), data = bdclean))
+```
+
+From this boxplot it seems like the mean birthweight is quite consistent throughout all the categories. For the races that have more data points than other, the standard deviations are larger, however from the ANOVA test (it appears that there is not a significant relationship between birthweight and race of mother??). Therefore we may not include this predictor in the final model.  
+
+
 ##Boxplot: hispanic origin of mother vs birthweight
 ```{r}
 boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
+
+summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 ```
+Similarly from the box plot mean birthweight appears to be consistent across different categories of different sub-categories of mother's hispanic origin. Depending on the number of data points, standard deviation varies among the categories, however from an ANOVA test ----
 
 
 #Average Number Of Cigarettes Smoked Per Day Variables
