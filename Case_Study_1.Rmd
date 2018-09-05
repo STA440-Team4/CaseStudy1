@@ -41,6 +41,8 @@ bdclean=na.omit(birth_data)
 attach(bdclean)
 ```
 
+At the start of our data cleaning, we read in the .csv file with birth weight data from North Carolinian mothers in 2011-2016. In the data, missing values were expressed as "9", "99", or "999", so we replaced these occurrences with NAs. We also accounted for outliers by turning illogical values to NAs. For example, we found it implausible for gestation period to take less than 20 months or more than 50 months, and a birth weight of less than 500 grams would be near impossible. Afterwards, we removed the NA values to create a clean data set. We also made sex into a binary variable called "male," in which "male=1" means the baby was male and "male=0" means the baby was female. This was to make modeling, analysis, and interpretation easier.
+
 #Factors Associated with Birth Weight
 
 To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
@@ -53,10 +55,70 @@ pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 
 ```
 
+In order to explore the possible relationships between numerical variables and birth weight, we paired and plotted the values in a matrix. We noticed that the birth weight vs. parity and birth weight vs. plurality plots fanned left, suggesting non-constant variance. We could not notice any clear correlation between birth weight and a mother's age. The strongest correlation we saw was in birth weight vs. gestation, which seems to have a slight curve in its positive trend. This would suggest that we need to use a logistic regression for this variable, or transform the gestation variable by squaring it before performing linear regression.
+
+The plots also show relationships between the variables themselves. We visually examined these plots to look for interaction that we may need to test for. ________
+
 #Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
+##Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
 ```{r}
+bdclean$CIGPN[bdclean$CIGPN == 0] = "Zero Pack"
+bdclean$CIGPN[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="One pack or less"
+bdclean$CIGPN[bdclean$CIGPN >20 &bdclean$CIGPN <=40 ]="One pack to two packs"
+bdclean$CIGPN[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="Two packs to three packs"
+bdclean$CIGPN[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="Three packs to four packs"
+bdclean$CIGPN[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="Four packs to five packs"
+bdclean
 
+boxplot(BWTG_C~CIGPN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
+Three Months Prior to Pregnancy", ylab = "Birthweight in Grams")
+```
+
+
+##Average number of Cigarettes Smoked per Day First Three Months of Pregnancy
+```{r}
+bdclean$CIGFN[bdclean$CIGFN == 0] = "Zero Pack"
+bdclean$CIGFN[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="One pack or less"
+bdclean$CIGFN[bdclean$CIGFN >20 &bdclean$CIGFN <=40 ]="One pack to two packs"
+bdclean$CIGFN[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="Two packs to three packs"
+bdclean$CIGFN[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="Three packs to four packs"
+bdclean$CIGFN[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="Four packs to five packs"
+
+boxplot(BWTG_C~CIGFN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
+First Three Months of Pregnancy", ylab = "Birthweight in Grams")
+```
+
+
+
+##Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
+```{r}
+bdclean$CIGSN[bdclean$CIGSN == 0] = "Zero Pack"
+bdclean$CIGSN[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="One pack or less"
+bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="One pack to two packs"
+bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="Two packs to three packs"
+bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="Three packs to four packs"
+bdclean$CIGSN[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="Four packs to five packs"
+
+
+boxplot(BWTG_C~CIGSN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
+Second Three Months of Pregnancy", ylab = "Birthweight in Grams")
+```
+
+
+
+##Average number of Cigarettes Smoked per Day Third or Last Trimester
+
+```{r}
+bdclean$CIGLN[bdclean$CIGLN == 0] = "Zero Pack"
+bdclean$CIGLN[bdclean$CIGLN >0 &bdclean$CIGLN <=20 ]="One pack or less"
+bdclean$CIGLN[bdclean$CIGLN >20 &bdclean$CIGLN <=40 ]="One pack to two packs"
+bdclean$CIGLN[bdclean$CIGLN >40 &bdclean$CIGLN <=60 ]="Two packs to three packs"
+bdclean$CIGLN[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="Three packs to four packs"
+bdclean$CIGLN[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="Four packs to five packs"
+
+boxplot(BWTG_C~CIGLN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
+Third or last Trimester", ylab = "Birthweight in Grams")
 ```
 
 ##Boxplot: Gender of Child vs Birthweight
