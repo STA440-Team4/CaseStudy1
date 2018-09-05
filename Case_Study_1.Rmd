@@ -25,8 +25,9 @@ library(magrittr)
 ```{r, echo=FALSE}
 #Read in birth data
 o_data <- read.csv("Yr1116Birth.csv", 
-                   na.strings=c("9","99", "9999"))
-#SEX=1 male, 2 female; male=1 male, 0 female
+                   na.strings=c("99", "9999"))
+o_data$SEX[o_data$SEX == 9] = NA
+#Using SEX=1 male, 2 female; create new variable "male". male=1 means male, 0 means female
 o_data$male=2-o_data$SEX #binary gender for interpretation
 
 birth_data <- na.omit(o_data)
@@ -57,13 +58,13 @@ To begin determining which factors are associated with birth weight, we first in
 
 In order to explore the possible relationships between numerical variables and birth weight, we paired and plotted the values in a matrix. We noticed that the birth weight vs. parity and birth weight vs. plurality plots fanned left, suggesting non-constant variance. We could not notice any clear correlation between birth weight and a mother's age. The strongest correlation we saw was in birth weight vs. gestation, which seems to have a slight curve in its positive trend. This would suggest that we need to use a logistic regression for this variable, or transform the gestation variable by squaring it before performing linear regression.
 
-The plots also show relationships between the variables themselves. We visually examined these plots to look for interaction that we may need to test for. ________
+The plots also show relationships between the variables themselves. We visually examined these plots to look for interaction that we may need to test for. However, there was no clear visual evidence of interaction between variables, so we will have to rely on our regression model to determine possible interactions.
 
 #Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
 ##Average Number Of Cigarettes Smoked Per Day Variables
 
-We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. Thinking about it this way, the numbers between the multiples now seemed strange! 
+We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. With this in mind, it would be more logical to look at cigarettes by pack, rather than account for each individual cigarette.
 
 In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers, and between mothers who smoked a little and a lot. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
 
@@ -94,7 +95,6 @@ boxplot(BWTG_C~CIGFN, data = bdclean, xlab = "Average number of Cigarettes Smoke
 First Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ```
 
-
 ###Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
 ```{r}
 bdclean$CIGSN[bdclean$CIGSN == 0] = "0"
@@ -103,7 +103,6 @@ bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
 bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
 bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
 bdclean$CIGSN[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
-
 
 boxplot(BWTG_C~CIGSN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
 Second Three Months of Pregnancy", ylab = "Birthweight in Grams")
@@ -187,13 +186,23 @@ Finally, we took a look at the distributions and means of birthweights across di
 
 #Linear Regression Model 
 
-For our linear regression model, we wanted to work with the new transformed variables we had created and use backward selection. 
-Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
+For our linear regression model, we wanted to work with the new transformed variables we had created, exluding YOB, and use backward selection. 
 
 ```{r}
+<<<<<<< HEAD
 Simple_Model <- lm(BWTG_C ~ YOB, SEX, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket,
 ```
 
+=======
+#Simple Model with Multiple Categories for Different Amounts of Smoking
+Simple_Model_1 <- lm(BWTG_C ~ male, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new) 
+  
+#Simple Model with Smoking as a Binary Variable                  
+Simple_Model_2 <- lm(BWTG_C ~ male, CORES, CIGPN_dichotic, CIGFN_dichotic, CIGSN_dichotic, CIGLN_dichotic, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new)
+```
+
+Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
+>>>>>>> 1c761ef7855d430f741356bb30e10d016ca0b403
 
 #Other Models
 
