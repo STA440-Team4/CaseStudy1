@@ -257,4 +257,15 @@ error: Your local changes to the following files would be overwritten by merge:
 	Case_Study_1.Rmd
 Please commit your changes or stash them before you merge.
 Aborting
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .Saved working directory and index state WIP on master: 4038077 Merge branch 'master' of https://github.com/STA440-Team4/CaseStudy1
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ gti[K[Kit pull origin master
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+Auto-merging Case_Study_1.Rmd
+[?2004hMerge made by the 'recursive' strategy.
+ Case_Study_1.Rmd  |    53 [32m+[m[31m-[m
+ Case_Study_1.html | 12096 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m[31m--[m
+ 2 files changed, 11909 insertions(+), 240 deletions(-)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git stash drop
+Dropped refs/stash@{0} (21c60fe10f6a0ae768bdbec6b0310eb5f42debe8)
 ]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
