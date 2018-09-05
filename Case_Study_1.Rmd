@@ -94,7 +94,6 @@ boxplot(BWTG_C~CIGFN, data = bdclean, xlab = "Average number of Cigarettes Smoke
 First Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ```
 
-
 ###Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
 ```{r}
 bdclean$CIGSN[bdclean$CIGSN == 0] = "0"
@@ -103,7 +102,6 @@ bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
 bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
 bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
 bdclean$CIGSN[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
-
 
 boxplot(BWTG_C~CIGSN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
 Second Three Months of Pregnancy", ylab = "Birthweight in Grams")
@@ -173,12 +171,17 @@ Finally, we took a look at the distributions and means of birthweights across di
 
 #Linear Regression Model 
 
-For our linear regression model, we wanted to work with the new transformed variables we had created and use backward selection. 
-Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
+For our linear regression model, we wanted to work with the new transformed variables we had created, exluding YOB, and use backward selection. 
 
 ```{r}
-Simple_Model <- lm(BWTG_C ~ YOB, SEX, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket, 
+#Simple Model with Multiple Categories for Different Amounts of Smoking
+Simple_Model_1 <- lm(BWTG_C ~ male, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new) 
+  
+#Simple Model with Smoking as a Binary Variable                  
+Simple_Model_2 <- lm(BWTG_C ~ male, CORES, CIGPN_dichotic, CIGFN_dichotic, CIGSN_dichotic, CIGLN_dichotic, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new)
 ```
+
+Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
 #Other Models
 
