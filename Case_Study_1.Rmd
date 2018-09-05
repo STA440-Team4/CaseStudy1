@@ -70,55 +70,74 @@ In order to work with this variable, we did not think it made sense to treat it 
 
 ###Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
 ```{r}
-bdclean$CIGPN[bdclean$CIGPN == 0] = "0"
-bdclean$CIGPN[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="1-20"
-bdclean$CIGPN[bdclean$CIGPN >20 &bdclean$CIGPN <=40 ]="20-40 "
-bdclean$CIGPN[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="40-60"
-bdclean$CIGPN[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="60-80"
-bdclean$CIGPN[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="80-98"
+bdclean$CIGPN_dichotic[bdclean$CIGPN == 0] = 0
+bdclean$CIGPN_dichotic[bdclean$CIGPN > 0] = 1
 
-boxplot(BWTG_C~CIGPN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
-Three Months Prior to Pregnancy", ylab = "Birthweight in Grams")
+bdclean$CIGPN_bucket[bdclean$CIGPN == 0] = "0"
+bdclean$CIGPN_bucket[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="1-20"
+bdclean$CIGPN_bucket[bdclean$CIGPN >20 &bdclean$CIGPN <=40 ]="20-40 "
+bdclean$CIGPN_bucket[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="40-60"
+bdclean$CIGPN_bucket[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="60-80"
+bdclean$CIGPN_bucket[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="80-98"
+
+boxplot(BWTG_C~CIGPN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
+
+boxplot(BWTG_C~CIGPN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy (in buckets)", ylab = "Birthweight in Grams")
 ```
 
 
 ###Average number of Cigarettes Smoked per Day First Three Months of Pregnancy
 ```{r}
-bdclean$CIGFN[bdclean$CIGFN == 0] = "0"
-bdclean$CIGFN[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="1-20"
-bdclean$CIGFN[bdclean$CIGFN >20 &bdclean$CIGFN <=40 ]="20-40"
-bdclean$CIGFN[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="40-60"
-bdclean$CIGFN[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="60-80"
-bdclean$CIGFN[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="80-98"
+bdclean$CIGFN_dichotic[bdclean$CIGFN == 0] = 0
+bdclean$CIGFN_dichotic[bdclean$CIGFN > 0] = 1
 
-boxplot(BWTG_C~CIGFN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
-First Three Months of Pregnancy", ylab = "Birthweight in Grams")
+bdclean$CIGFN_bucket[bdclean$CIGFN == 0] = "0"
+bdclean$CIGFN_bucket[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="1-20"
+bdclean$CIGFN_bucket[bdclean$CIGFN >20 &bdclean$CIGFN <=40 ]="20-40"
+bdclean$CIGFN_bucket[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="40-60"
+bdclean$CIGFN_bucket[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="60-80"
+bdclean$CIGFN_bucket[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="80-98"
+
+boxplot(BWTG_C~CIGFN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day First Three Months of Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
+
+boxplot(BWTG_C~CIGFN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day First Three Months of Pregnancy (in buckets)", ylab = "Birthweight in Grams")
 ```
 
 ###Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
 ```{r}
-bdclean$CIGSN[bdclean$CIGSN == 0] = "0"
-bdclean$CIGSN[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="1-20"
-bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
-bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
-bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
-bdclean$CIGSN[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
+bdclean$CIGSN_dichotic[bdclean$CIGSN == 0] = 0
+bdclean$CIGSN_dichotic[bdclean$CIGSN > 0] = 1
 
-boxplot(BWTG_C~CIGSN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
-Second Three Months of Pregnancy", ylab = "Birthweight in Grams")
+bdclean$CIGSN_bucket[bdclean$CIGSN == 0] = "0"
+bdclean$CIGSN_bucket[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="1-20"
+bdclean$CIGSN_bucket[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
+bdclean$CIGSN_bucket[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
+bdclean$CIGSN_bucket[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
+bdclean$CIGSN_bucket[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
+
+boxplot(BWTG_C~CIGSN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
+
+boxplot(BWTG_C~CIGSN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy (in bucket)", ylab = "Birthweight in Grams")
+
 ```
 
 ###Average number of Cigarettes Smoked per Day Third or Last Trimester
 
 ```{r}
-bdclean$CIGLN[bdclean$CIGLN == 0] = "0"
-bdclean$CIGLN[bdclean$CIGLN >0 &bdclean$CIGLN <=20 ]="1-20"
-bdclean$CIGLN[bdclean$CIGLN >20 &bdclean$CIGLN <=40 ]="20-40"
-bdclean$CIGLN[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="60-80"
-bdclean$CIGLN[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
+bdclean$CIGLN_dichotic[bdclean$CIGLN == 0] = 0
+bdclean$CIGLN_dichotic[bdclean$CIGLN > 0] = 1
 
-boxplot(BWTG_C~CIGLN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
-Third or last Trimester", ylab = "Birthweight in Grams")
+bdclean$CIGLN_bucket[bdclean$CIGLN == 0] = "0"
+bdclean$CIGLN_bucket[bdclean$CIGLN >0 &bdclean$CIGLN <=20 ]="1-20"
+bdclean$CIGLN_bucket[bdclean$CIGLN >20 &bdclean$CIGLN <=40 ]="20-40"
+bdclean$CIGLN_bucket[bdclean$CIGLN >40 &bdclean$CIGLN <=60 ]="40-60"
+bdclean$CIGLN_bucket[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="60-80"
+bdclean$CIGLN_bucket[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
+
+boxplot(BWTG_C~CIGLN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (dichotomized)", ylab = "Birthweight in Grams")
+
+boxplot(BWTG_C~CIGLN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (in bucket)", ylab = "Birthweight in Grams")
+
 ```
 
 ##Boxplot: Gender of Child vs Birthweight
@@ -161,6 +180,20 @@ summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 
 Similarly from the box plot average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will make sense to figure out which category deviates most from others (#TODO). We decided to use hispanic origin of mother as a categorical variable in our model. 
 
+#Total Pregnancies (Including This One) and Plurality
+
+```{r}
+
+bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
+bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
+boxplot(BWTG_C~PARITY_new,data=bdclean,col="blue",ylab="Birthweight (grams)",xlab="number of pregnancy")
+
+bdclean$PLUR_new[bdclean$PLUR == 1] = "first child"
+bdclean$PLUR_new[bdclean$PLUR >1]=">1 children"
+boxplot(BWTG_C~PLUR_new,data=bdclean,col="green",ylab="Birthweight (grams)",xlab="number of children")
+```
+
+
 ##Year of Birth
 
 ```{r}
@@ -169,6 +202,13 @@ bdclean %>% group_by(YOB) %>% summarize(mean_birthweight = mean(BWTG_C))
 ```
 
 Finally, we took a look at the distributions and means of birthweights across different years. Looking at the means, we found no reason to believe that the year of birth had an impact on the birth weight of the mother, and any significance found through an anova test, could probably be attributed to the large sample size. Thus, we chose not to include this variable as a predictor moving forward. 
+
+#Data cleaning and tranformation
+
+```{r}
+
+```
+
 
 #Linear Regression Model 
 
