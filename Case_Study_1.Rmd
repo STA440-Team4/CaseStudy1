@@ -66,6 +66,15 @@ males = subset(bdclean, male==1)
 summary(males$BWTG)
 females = subset(bdclean, male==0)
 summary(females$BWTG)
+
+#Standard Deviation of Birthweights for Males
+sd(males$BWTG)
+#Standard Deviation of Birthweights for Females
+sd(females$BWTG)
+
+#Difference in mean weights based on gender
+t.test(males$BWTG, females$BWTG)
+
 boxplot(BWTG~male,col="blue",ylab="Birthweight (grams)",xlab="Gender (female = 0, male = 1)")
 ```
 
@@ -78,6 +87,7 @@ boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother"
 ```{r}
 boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
 ```
+
 
 
 #Average Number Of Cigarettes Smoked Per Day Variables
