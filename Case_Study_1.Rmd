@@ -22,7 +22,7 @@ library(magrittr)
 
 #Data Import and Cleaning
 
-```{r}
+```{r, echo=FALSE}
 #Read in birth data
 o_data <- read.csv("Yr1116Birth.csv", 
                    na.strings=c("9","99", "9999"))
@@ -49,9 +49,9 @@ To begin determining which factors are associated with birth weight, we first in
 
 #Numerical Variables: Age, gestation, plurality, parity
 
-```{r}
+```{r, cache = TRUE}
 # Parity
-pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
+#pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 
 ```
 
@@ -63,13 +63,12 @@ The plots also show relationships between the variables themselves. We visually 
 
 ##Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
 ```{r}
-bdclean$CIGPN[bdclean$CIGPN == 0] = "Zero Pack"
-bdclean$CIGPN[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="One pack or less"
-bdclean$CIGPN[bdclean$CIGPN >20 &bdclean$CIGPN <=40 ]="One pack to two packs"
-bdclean$CIGPN[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="Two packs to three packs"
-bdclean$CIGPN[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="Three packs to four packs"
-bdclean$CIGPN[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="Four packs to five packs"
-bdclean
+bdclean$CIGPN[bdclean$CIGPN == 0] = "0"
+bdclean$CIGPN[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="1-20"
+bdclean$CIGPN[bdclean$CIGPN >20 &bdclean$CIGPN <=40 ]="20-40 "
+bdclean$CIGPN[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="40-60"
+bdclean$CIGPN[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="60-80"
+bdclean$CIGPN[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="80-98"
 
 boxplot(BWTG_C~CIGPN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
 Three Months Prior to Pregnancy", ylab = "Birthweight in Grams")
@@ -78,27 +77,26 @@ Three Months Prior to Pregnancy", ylab = "Birthweight in Grams")
 
 ##Average number of Cigarettes Smoked per Day First Three Months of Pregnancy
 ```{r}
-bdclean$CIGFN[bdclean$CIGFN == 0] = "Zero Pack"
-bdclean$CIGFN[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="One pack or less"
-bdclean$CIGFN[bdclean$CIGFN >20 &bdclean$CIGFN <=40 ]="One pack to two packs"
-bdclean$CIGFN[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="Two packs to three packs"
-bdclean$CIGFN[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="Three packs to four packs"
-bdclean$CIGFN[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="Four packs to five packs"
+bdclean$CIGFN[bdclean$CIGFN == 0] = "0"
+bdclean$CIGFN[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="1-20"
+bdclean$CIGFN[bdclean$CIGFN >20 &bdclean$CIGFN <=40 ]="20-40"
+bdclean$CIGFN[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="40-60"
+bdclean$CIGFN[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="60-80"
+bdclean$CIGFN[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="80-98"
 
 boxplot(BWTG_C~CIGFN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
 First Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ```
 
 
-
 ##Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
 ```{r}
-bdclean$CIGSN[bdclean$CIGSN == 0] = "Zero Pack"
+bdclean$CIGSN[bdclean$CIGSN == 0] = "0"
 bdclean$CIGSN[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="One pack or less"
-bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="One pack to two packs"
-bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="Two packs to three packs"
-bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="Three packs to four packs"
-bdclean$CIGSN[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="Four packs to five packs"
+bdclean$CIGSN[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
+bdclean$CIGSN[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
+bdclean$CIGSN[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
+bdclean$CIGSN[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
 
 
 boxplot(BWTG_C~CIGSN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
@@ -110,12 +108,11 @@ Second Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ##Average number of Cigarettes Smoked per Day Third or Last Trimester
 
 ```{r}
-bdclean$CIGLN[bdclean$CIGLN == 0] = "Zero Pack"
-bdclean$CIGLN[bdclean$CIGLN >0 &bdclean$CIGLN <=20 ]="One pack or less"
-bdclean$CIGLN[bdclean$CIGLN >20 &bdclean$CIGLN <=40 ]="One pack to two packs"
-bdclean$CIGLN[bdclean$CIGLN >40 &bdclean$CIGLN <=60 ]="Two packs to three packs"
-bdclean$CIGLN[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="Three packs to four packs"
-bdclean$CIGLN[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="Four packs to five packs"
+bdclean$CIGLN[bdclean$CIGLN == 0] = "0"
+bdclean$CIGLN[bdclean$CIGLN >0 &bdclean$CIGLN <=20 ]="1-20"
+bdclean$CIGLN[bdclean$CIGLN >20 &bdclean$CIGLN <=40 ]="20-40"
+bdclean$CIGLN[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="60-80"
+bdclean$CIGLN[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
 
 boxplot(BWTG_C~CIGLN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
 Third or last Trimester", ylab = "Birthweight in Grams")
