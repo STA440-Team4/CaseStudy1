@@ -13,6 +13,13 @@ Objectives:
 
 Interim report (9/7): produce a 5 page (maximum) report using R markdown that clearly describes your process for model selection and validation. Provide clear interpretations of the associations between each predictor and birth weight in layperson’s language, including characterization of uncertainty. Figures may be included as appropriate. Code should be fully reproducible.
 
+#Library of Packages
+
+```{r}
+library(dplyr)
+
+```
+
 #Data Import and Cleaning
 
 ```{r}
@@ -30,6 +37,7 @@ birth_data$GEST_C[birth_data$GEST_C>50]=NA
 birth_data$GEST_C[birth_data$GEST_C<20]=NA
 birth_data$BWTG_C[birth_data$BWTG_C<500]=NA
 bdclean=na.omit(birth_data)
+
 attach(bdclean)
 ```
 
@@ -52,19 +60,46 @@ boxplot(BWTG~MRACER)
 #Boxplot: hispanic origin of mother vs birthweight
 boxplot(BWTG~MHISP,data=bdclean)
 
+
+
+
 ```
 
 #Factors Associated with Birth Weight
 
+To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
+
+#Numerical Variables: Age, gestation, plurality, parity
+
 ```{r}
 
 
 ```
 
-#Linear Regression Model 
+#Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
 ```{r}
 
+```
+
+
+#Average Number Of Cigarettes Smoked Per Day Variables
+
+We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further and realizing that most cigarette packs have either 20 or 25 cigarettes in them, we realized that responders were most likely responding with the equivalent of 0.5, 1, 1.5, or 2 packs a day of smoking in their heads. Thinking about it this way, the numbers between the multiples now seemed strange! 
+
+In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
+
+```{r}
+
+```
+
+Our findings show that there is a ___ relationship between...
+
+#Linear Regression Model 
+
+Potentially square gestation because it appears to be exhibit a logistic relationship with
+
+```{r}
 
 ```
 
@@ -76,7 +111,6 @@ boxplot(BWTG~MHISP,data=bdclean)
 ```
 
 #Impact Of Eliminating Maternal Smoking on Birth Weight in the Population
-
 
 ```{r}
 

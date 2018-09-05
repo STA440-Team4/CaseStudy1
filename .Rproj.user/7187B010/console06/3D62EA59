@@ -36,3 +36,61 @@ Fast-forward
 ]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git stash drop
 Dropped refs/stash@{0} (61de3209846fba0790997bcbe268b715861bbf77)
 ]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ [KStevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull [K[K[K[K[Kadd .
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git commit -m "boxplot EdA[K[KDA for gender,race[K[K[K[K[K and race"
+[master a619ced] boxplot EDA for gender and race
+ Committer: Steven Yang <stevenyang@Stevens-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 31 files changed, 502 insertions(+)
+ create mode 100644 .Rproj.user/7187B010/console06/3D62EA59
+ create mode 100644 .Rproj.user/7187B010/console06/3D62EA59.env
+ create mode 100644 .Rproj.user/7187B010/console06/INDEX001
+ create mode 100644 .Rproj.user/7187B010/sources/prop/8B172662
+ create mode 100644 .Rproj.user/7187B010/sources/prop/8FBEAAAD
+ create mode 100644 .Rproj.user/7187B010/sources/prop/BC72FEF8
+ create mode 100644 .Rproj.user/7187B010/sources/prop/C6B4BF2D
+ create mode 100644 .Rproj.user/7187B010/sources/prop/F6BAB187
+ create mode 100644 .Rproj.user/7187B010/sources/prop/INDEX
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/201388EF-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/261A0D9E-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/3507F673-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/392F629C-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/397D94B3-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/44DB683F
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/44DB683F-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/5D634D4D-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/82003472
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/82003472-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/AA1A1C35-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/C2A2E53F-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/DBCF3027-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/E44AF7D3-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/F856D89-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/lock_file
+ create mode 100644 .Rproj.user/shared/notebooks/24971912-Case Study 1/1/7187B010D95AF720/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/24971912-Case Study 1/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ create mode 100644 .Rproj.user/shared/notebooks/paths
+ create mode 100644 STA440 Case Study 1.Rproj
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 3, done.[K
+remote: Compressing objects:  50% (1/2)   [Kremote: Compressing objects: 100% (2/2)   [Kremote: Compressing objects: 100% (2/2), done.[K
+remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0[K
+Unpacking objects:  33% (1/3)   Unpacking objects:  66% (2/3)   Unpacking objects: 100% (3/3)   Unpacking objects: 100% (3/3), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   cd8a601..586f87f  master     -> origin/master
+Auto-merging Case Study 1.Rmd
+CONFLICT (content): Merge conflict in Case Study 1.Rmd
+Automatic merge failed; fix conflicts and then commit the result.
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
