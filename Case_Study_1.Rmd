@@ -17,7 +17,7 @@ Interim report (9/7): produce a 5 page (maximum) report using R markdown that cl
 
 ```{r}
 library(dplyr)
-
+library(magrittr)
 ```
 
 #Data Import and Cleaning
@@ -41,6 +41,8 @@ bdclean=na.omit(birth_data)
 attach(bdclean)
 ```
 
+At the start of our data cleaning, we read in the .csv file with birth weight data from North Carolinian mothers in 2011-2016. In the data, missing values were expressed as "9", "99", or "999", so we replaced these occurrences with NAs. We also accounted for outliers by turning illogical values to NAs. For example, we found it implausible for gestation period to take less than 20 months or more than 50 months, and a birth weight of less than 500 grams would be near impossible. Afterwards, we removed the NA values to create a clean data set. We also made sex into a binary variable called "male," in which "male=1" means the baby was male and "male=0" means the baby was female. This was to make modeling, analysis, and interpretation easier.
+
 #Factors Associated with Birth Weight
 
 To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
@@ -52,6 +54,10 @@ To begin determining which factors are associated with birth weight, we first in
 pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 
 ```
+
+In order to explore the possible relationships between numerical variables and birth weight, we paired and plotted the values in a matrix. We noticed that the birth weight vs. parity and birth weight vs. plurality plots fanned left, suggesting non-constant variance. We could not notice any clear correlation between birth weight and a mother's age. The strongest correlation we saw was in birth weight vs. gestation, which seems to have a slight curve in its positive trend. This would suggest that we need to use a logistic regression for this variable, or transform the gestation variable by squaring it before performing linear regression.
+
+The plots also show relationships between the variables themselves. We visually examined these plots to look for interaction that we may need to test for. ________
 
 #Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
@@ -113,8 +119,7 @@ boxplot(BWTG_C~CIGLN, data = bdclean, xlab = "Average number of Cigarettes Smoke
 Third or last Trimester", ylab = "Birthweight in Grams")
 ```
 
-
-##Boxplot: gender of child vs birthweight
+##Boxplot: Gender of Child vs Birthweight
 ```{r}
 males = subset(bdclean, male==1)
 summary(males$BWTG)
@@ -122,6 +127,8 @@ females = subset(bdclean, male==0)
 summary(females$BWTG)
 boxplot(BWTG~male,col="blue",ylab="Birthweight (grams)",xlab="Gender (female = 0, male = 1)")
 ```
+
+Taking a look at the relationship of the gender of the child v. the birthweight, it does appear that male babies have slightly higher weights than female babies. The median male baby is appxomately 3,374 grams v. 3,250 grams for a female baby. Furthermore, conducting a simple difference in means test, we do find a statistically significant difference between the mean of male babies (~3,322 grams) and female babies (~3,206 grams). Thus, we do think that we should include this variable in our linear regression model, and it does make sense to treat as a categorical variable (female, male). 
 
 ##Boxplot: race of mother vs birthweight
 ```{r}
@@ -136,9 +143,9 @@ boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origi
 
 #Average Number Of Cigarettes Smoked Per Day Variables
 
-We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further and realizing that most cigarette packs have either 20 or 25 cigarettes in them, we realized that responders were most likely responding with the equivalent of 0.5, 1, 1.5, or 2 packs a day of smoking in their heads. Thinking about it this way, the numbers between the multiples now seemed strange! 
+We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. Thinking about it this way, the numbers between the multiples now seemed strange! 
 
-In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
+In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers, and between mothers who smoked a little and a lot. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
 
 ```{r}
 
