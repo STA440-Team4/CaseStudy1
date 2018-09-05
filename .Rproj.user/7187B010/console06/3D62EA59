@@ -1,0 +1,150 @@
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1[?1034hStevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ [KStevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 3, done.[K
+remote: Compressing objects:  33% (1/3)   [Kremote: Compressing objects:  66% (2/3)   [Kremote: Compressing objects: 100% (3/3)   [Kremote: Compressing objects: 100% (3/3), done.[K
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0[K
+Unpacking objects:  33% (1/3)   Unpacking objects:  66% (2/3)   Unpacking objects: 100% (3/3)   Unpacking objects: 100% (3/3), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   a8e306f..06e10af  master     -> origin/master
+Updating a8e306f..06e10af
+Fast-forward
+ Case Study 1.Rmd | 37 [32m+++++++++++++++++++++++++++++++++++++[m
+ 1 file changed, 37 insertions(+)
+ create mode 100644 Case Study 1.Rmd
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 3, done.[K
+remote: Compressing objects: 100% (1/1)   [Kremote: Compressing objects: 100% (1/1), done.[K
+remote: Total 3 (delta 2), reused 3 (delta 2), pack-reused 0[K
+Unpacking objects:  33% (1/3)   Unpacking objects:  66% (2/3)   Unpacking objects: 100% (3/3)   Unpacking objects: 100% (3/3), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   06e10af..cd8a601  master     -> origin/master
+Updating 06e10af..cd8a601
+error: Your local changes to the following files would be overwritten by merge:
+	Case Study 1.Rmd
+Please commit your changes or stash them before you merge.
+Aborting
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git stash
+Saved working directory and index state WIP on master: 06e10af Basic Guidelines for the Project
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+Updating 06e10af..cd8a601
+Fast-forward
+ Case Study 1.Rmd | 28 [32m+++++++++++++++++++++++++++[m[31m-[m
+ 1 file changed, 27 insertions(+), 1 deletion(-)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git stash drop
+Dropped refs/stash@{0} (61de3209846fba0790997bcbe268b715861bbf77)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ [KStevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull [K[K[K[K[Kadd .
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git commit -m "boxplot EdA[K[KDA for gender,race[K[K[K[K[K and race"
+[master a619ced] boxplot EDA for gender and race
+ Committer: Steven Yang <stevenyang@Stevens-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 31 files changed, 502 insertions(+)
+ create mode 100644 .Rproj.user/7187B010/console06/3D62EA59
+ create mode 100644 .Rproj.user/7187B010/console06/3D62EA59.env
+ create mode 100644 .Rproj.user/7187B010/console06/INDEX001
+ create mode 100644 .Rproj.user/7187B010/sources/prop/8B172662
+ create mode 100644 .Rproj.user/7187B010/sources/prop/8FBEAAAD
+ create mode 100644 .Rproj.user/7187B010/sources/prop/BC72FEF8
+ create mode 100644 .Rproj.user/7187B010/sources/prop/C6B4BF2D
+ create mode 100644 .Rproj.user/7187B010/sources/prop/F6BAB187
+ create mode 100644 .Rproj.user/7187B010/sources/prop/INDEX
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/201388EF-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/261A0D9E-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/3507F673-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/392F629C-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/397D94B3-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/44DB683F
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/44DB683F-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/5D634D4D-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/82003472
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/82003472-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/AA1A1C35-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/C2A2E53F-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/DBCF3027-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/E44AF7D3-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/F856D89-contents
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/lock_file
+ create mode 100644 .Rproj.user/shared/notebooks/24971912-Case Study 1/1/7187B010D95AF720/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/24971912-Case Study 1/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ create mode 100644 .Rproj.user/shared/notebooks/paths
+ create mode 100644 STA440 Case Study 1.Rproj
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 3, done.[K
+remote: Compressing objects:  50% (1/2)   [Kremote: Compressing objects: 100% (2/2)   [Kremote: Compressing objects: 100% (2/2), done.[K
+remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0[K
+Unpacking objects:  33% (1/3)   Unpacking objects:  66% (2/3)   Unpacking objects: 100% (3/3)   Unpacking objects: 100% (3/3), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   cd8a601..586f87f  master     -> origin/master
+Auto-merging Case Study 1.Rmd
+CONFLICT (content): Merge conflict in Case Study 1.Rmd
+Automatic merge failed; fix conflicts and then commit the result.
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git commit -m "fix merge conflict"
+[master 3529816] fix merge conflict
+ Committer: Steven Yang <stevenyang@Stevens-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git push origin master[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgit pull origin [K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgit ad.d .
+git: 'ad.d' is not a git command. See 'git --help'.
+
+The most similar command is
+	add
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git commti -m [K[K[K[K[K[Kit -m "box [Kplots for categorical variabels[K[K[Klkes[K[Kes[K[K[Kes"
+[master 9d2d744] boxplots for categorical variables
+ Committer: Steven Yang <stevenyang@Stevens-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 7 files changed, 48 insertions(+), 25 deletions(-)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 18, done.[K
+remote: Compressing objects:  10% (1/10)   [Kremote: Compressing objects:  20% (2/10)   [Kremote: Compressing objects:  30% (3/10)   [Kremote: Compressing objects:  40% (4/10)   [Kremote: Compressing objects:  50% (5/10)   [Kremote: Compressing objects:  60% (6/10)   [Kremote: Compressing objects:  70% (7/10)   [Kremote: Compressing objects:  80% (8/10)   [Kremote: Compressing objects:  90% (9/10)   [Kremote: Compressing objects: 100% (10/10)   [Kremote: Compressing objects: 100% (10/10), done.[K
+Unpacking objects:   5% (1/18)   Unpacking objects:  11% (2/18)   Unpacking objects:  16% (3/18)   Unpacking objects:  22% (4/18)   Unpacking objects:  27% (5/18)   Unpacking objects:  33% (6/18)   Unpacking objects:  38% (7/18)   Unpacking objects:  44% (8/18)   Unpacking objects:  50% (9/18)   Unpacking objects:  55% (10/18)   Unpacking objects:  61% (11/18)   remote: Total 18 (delta 11), reused 15 (delta 8), pack-reused 0[K
+Unpacking objects:  66% (12/18)   Unpacking objects:  72% (13/18)   Unpacking objects:  77% (14/18)   Unpacking objects:  83% (15/18)   Unpacking objects:  88% (16/18)   Unpacking objects:  94% (17/18)   Unpacking objects: 100% (18/18)   Unpacking objects: 100% (18/18), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   586f87f..4c52b7c  master     -> origin/master
+Auto-merging Case Study 1.Rmd
+[?2004hMerge made by the 'recursive' strategy.
+ Case Study 1.Rmd  |   5 [32m+[m[31m-[m
+ Case_Study_1.Rmd  |  96 [32m++++++++++++++++++++++[m
+ Case_Study_1.html | 394 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ 3 files changed, 493 insertions(+), 2 deletions(-)
+ create mode 100644 Case_Study_1.Rmd
+ create mode 100644 Case_Study_1.html
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .

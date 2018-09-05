@@ -41,7 +41,24 @@ bdclean=na.omit(birth_data)
 attach(bdclean)
 ```
 
-#EDA
+#Factors Associated with Birth Weight
+
+To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
+
+#Numerical Variables: Age, gestation, plurality, parity
+
+```{r}
+# Parity
+pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
+
+```
+
+#Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
+
+```{r}
+
+```
+
 
 ##Boxplot: gender of child vs birthweight
 ```{r}
@@ -60,28 +77,6 @@ boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother"
 ##Boxplot: hispanic origin of mother vs birthweight
 ```{r}
 boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
-```
-
-
-
-```
-
-#Factors Associated with Birth Weight
-
-To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
-
-#Numerical Variables: Age, gestation, plurality, parity
-
-```{r}
-# Parity
-pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
-
-```
-
-#Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
-
-```{r}
-
 ```
 
 
