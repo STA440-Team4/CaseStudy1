@@ -180,6 +180,15 @@ summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 
 Similarly from the box plot average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will make sense to figure out which category deviates most from others (#TODO). We decided to use hispanic origin of mother as a categorical variable in our model. 
 
+##Year of Birth
+
+```{r}
+boxplot(BWTG_C~YOB)
+bdclean %>% group_by(YOB) %>% summarize(mean_birthweight = mean(BWTG_C))
+```
+
+Finally, we took a look at the distributions and means of birthweights across different years. Looking at the means, we found no reason to believe that the year of birth had an impact on the birth weight of the mother, and any significance found through an anova test, could probably be attributed to the large sample size. Thus, we chose not to include this variable as a predictor moving forward. 
+
 #Data cleaning and tranformation
 
 ```{r}
@@ -193,7 +202,7 @@ For our linear regression model, we wanted to work with the new transformed vari
 Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
 ```{r}
-
+Simple_Model <- lm(BWTG_C ~ YOB, SEX, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket, 
 ```
 
 #Other Models
@@ -206,7 +215,6 @@ Potentially square gestation because it appears to be exhibit a logistic relatio
 #Impact Of Eliminating Maternal Smoking on Birth Weight in the Population
 
 ```{r}
-
 
 ```
 
