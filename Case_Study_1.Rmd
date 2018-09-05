@@ -74,6 +74,7 @@ Our findings show that there is a ___ relationship between...
 
 #Linear Regression Model 
 
+For our linear regression model, we wanted to work with the new transformed variables we had created and use backward selection. 
 Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
 ```{r}
