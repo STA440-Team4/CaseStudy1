@@ -53,20 +53,72 @@ To begin determining which factors are associated with birth weight, we first in
 ```{r, cache = TRUE}
 # Parity
 #pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
+```
 
+```{r, eval = FALSE}
+#Finding means for numerical values
+PARITYmean = aggregate(BWTG ~ PARITY, bdclean, mean)
+PLURmean = aggregate(BWTG ~ PLUR, bdclean, mean)
+GESTmean = aggregate(BWTG ~ GEST, bdclean, mean)
+MAGEmean = aggregate(BWTG ~ MAGE, bdclean, mean)
+```
+
+```{r}
+plot(BWTG ~ PARITY, data = PARITYmean)
+plot(BWTG ~ PLUR, data = PLURmean)
+plot(BWTG ~ GEST, data = GESTmean)
+plot(BWTG ~ MAGE, data = MAGEmean)
 ```
 
 In order to explore the possible relationships between numerical variables and birth weight, we paired and plotted the values in a matrix. We noticed that the birth weight vs. parity and birth weight vs. plurality plots fanned left, suggesting non-constant variance. We could not notice any clear correlation between birth weight and a mother's age. The strongest correlation we saw was in birth weight vs. gestation, which seems to have a slight curve in its positive trend. This would suggest that we need to use a logistic regression for this variable, or transform the gestation variable by squaring it before performing linear regression.
 
-The plots also show relationships between the variables themselves. We visually examined these plots to look for interaction that we may need to test for. However, there was no clear visual evidence of interaction between variables, so we will have to rely on our regression model to determine possible interactions.
+Due to the sheer number of points in our data set, it was difficult to determine trends precisely, especially where points overlapped. Therefore, we took the average birth weight for each value of each numerical variable. We plotted the average birth weight against these numerical values and found some interesting trends. Parity seems to have a slightly quadratic trend, with higher birth weights at low and at high parity, with a dip in the middle. Greater plurality seems to negatively correlate with birthweight, also possibly with a quadratic trend, with the greatest difference in birthweight between having one child and having twins.For gestation, there seems to be a quadratic correlation with birthweight. The graph suggests that we may need to perform a transformation with an order greater than 2.  Finally, for mother's age, there seems to be a negative quadratic relationship with birth weight. I.e. very young and older mothers have lower birth weights than mothers in the middle. In conclusion, these graphs of averages suggest that we will need to test out polynomial transformations for all these variables.
 
 #Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
 ##Average Number Of Cigarettes Smoked Per Day Variables
 
+```{r, eval = FALSE}
+#Cigarette values
+CIGPNmean = aggregate(BWTG ~ CIGPN, bdclean, mean)
+CIGFNmean = aggregate(BWTG ~ CIGFN, bdclean, mean)
+CIGSNmean = aggregate(BWTG ~ CIGSN, bdclean, mean)
+CIGLNmean = aggregate(BWTG ~ CIGLN, bdclean, mean)
+
+#Cigarette values accounting for packs
+bdclean$CIGPNpack = bdclean$CIGPN
+bdclean$CIGPNpack[CIGPN >= 20] = "20+"
+CIGPNpackmean = aggregate(BWTG ~ CIGPNpack, bdclean, mean)
+
+bdclean$CIGFNpack = bdclean$CIGFN
+bdclean$CIGFNpack[CIGFN >= 20] = "20+"
+CIGFNpackmean = aggregate(BWTG ~ CIGFNpack, bdclean, mean)
+
+bdclean$CIGSNpack = bdclean$CIGSN
+bdclean$CIGSNpack[CIGSN >= 20] = "20+"
+CIGSNpackmean = aggregate(BWTG ~ CIGSNpack, bdclean, mean)
+
+bdclean$CIGLNpack = bdclean$CIGLN
+bdclean$CIGLNpack[CIGLN >= 20] = "20+"
+CIGLNpackmean = aggregate(BWTG ~ CIGLNpack, bdclean, mean)
+```
+
+```{r}
+plot(BWTG ~ CIGPN, data = CIGPNmean)
+plot(BWTG ~ CIGPNpack, data = CIGPNpackmean)
+plot(BWTG ~ CIGFN, data = CIGFNmean)
+plot(BWTG ~ CIGFNpack, data = CIGFNpackmean)
+plot(BWTG ~ CIGSN, data = CIGSNmean)
+plot(BWTG ~ CIGSNpack, data = CIGSNpackmean)
+plot(BWTG ~ CIGLN, data = CIGLNmean)
+plot(BWTG ~ CIGLNpack, data = CIGLNpackmean)
+```
+
 We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. With this in mind, it would be more logical to look at cigarettes by pack, rather than account for each individual cigarette.
 
-In order to work with this variable, we did not think it made sense to treat it as continuous as we wanted to distinguish between non-smokers and smokers, and between mothers who smoked a little and a lot. Thus, we instead treated this as a categorical variable and created the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
+Moreover, when viewing the average birthweight for across each number of cigarettes, we noticed a fan right pattern for all smoking data. This is likely because very few people will smoke an average of, for example, 60 or 80 cigarettes per day, which leads to higher variability. This fanning started especially around 20 cigarettes, which makes sense considering that a typical pack contains 20 cigarettes. So, we binned 20+ cigarettes and re-plotted. We noticed that for all 4 cases of cigarette data, the birth weight for zero cigarettes was much higher, while the data for 1+ cigarettes fell mostly around the same range.
+
+Therefore, in order to work with this variable, we found it illogical to treat cigarettes as continuous. Instead, we will consider two possibilities: 1) We will distinguish between non-smokers and smokers, making smoking a binary variable. 2) We will distinguish between non-smokers, light smokers, and heavy smokers, making this a categorical variable and creating the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
 
 ###Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
 ```{r}
