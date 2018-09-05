@@ -13,6 +13,25 @@ Objectives:
 
 Interim report (9/7): produce a 5 page (maximum) report using R markdown that clearly describes your process for model selection and validation. Provide clear interpretations of the associations between each predictor and birth weight in layperson’s language, including characterization of uncertainty. Figures may be included as appropriate. Code should be fully reproducible.
 
+#Data Import and Cleaning
+
+```{r}
+#Read in birth data
+o_data <- read.csv("Yr1116Birth.csv", 
+                   na.strings=c("9","99", "9999"))
+#SEX=1 male, 2 female; male=1 male, 0 female
+o_data$male=2-o_data$SEX #binary gender for interpretation
+
+birth_data <- na.omit(o_data)
+
+birth_data$GEST_C=birth_data$GEST
+birth_data$BWTG_C=birth_data$BWTG
+birth_data$GEST_C[birth_data$GEST_C>50]=NA
+birth_data$GEST_C[birth_data$GEST_C<20]=NA
+birth_data$BWTG_C[birth_data$BWTG_C<500]=NA
+bdclean=na.omit(birth_data)
+```
+
 #Factors Associated with Birth Weight
 
 ```{r}
@@ -35,3 +54,10 @@ Interim report (9/7): produce a 5 page (maximum) report using R markdown that cl
 ```
 
 #Impact Of Eliminating Maternal Smoking on Birth Weight in the Population
+
+
+```{r}
+
+
+```
+
