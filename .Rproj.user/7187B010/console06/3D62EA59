@@ -115,3 +115,36 @@ git: 'ad.d' is not a git command. See 'git --help'.
 The most similar command is
 	add
 ]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git commti -m [K[K[K[K[K[Kit -m "box [Kplots for categorical variabels[K[K[Klkes[K[Kes[K[K[Kes"
+[master 9d2d744] boxplots for categorical variables
+ Committer: Steven Yang <stevenyang@Stevens-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 7 files changed, 48 insertions(+), 25 deletions(-)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 18, done.[K
+remote: Compressing objects:  10% (1/10)   [Kremote: Compressing objects:  20% (2/10)   [Kremote: Compressing objects:  30% (3/10)   [Kremote: Compressing objects:  40% (4/10)   [Kremote: Compressing objects:  50% (5/10)   [Kremote: Compressing objects:  60% (6/10)   [Kremote: Compressing objects:  70% (7/10)   [Kremote: Compressing objects:  80% (8/10)   [Kremote: Compressing objects:  90% (9/10)   [Kremote: Compressing objects: 100% (10/10)   [Kremote: Compressing objects: 100% (10/10), done.[K
+Unpacking objects:   5% (1/18)   Unpacking objects:  11% (2/18)   Unpacking objects:  16% (3/18)   Unpacking objects:  22% (4/18)   Unpacking objects:  27% (5/18)   Unpacking objects:  33% (6/18)   Unpacking objects:  38% (7/18)   Unpacking objects:  44% (8/18)   Unpacking objects:  50% (9/18)   Unpacking objects:  55% (10/18)   Unpacking objects:  61% (11/18)   remote: Total 18 (delta 11), reused 15 (delta 8), pack-reused 0[K
+Unpacking objects:  66% (12/18)   Unpacking objects:  72% (13/18)   Unpacking objects:  77% (14/18)   Unpacking objects:  83% (15/18)   Unpacking objects:  88% (16/18)   Unpacking objects:  94% (17/18)   Unpacking objects: 100% (18/18)   Unpacking objects: 100% (18/18), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   586f87f..4c52b7c  master     -> origin/master
+Auto-merging Case Study 1.Rmd
+[?2004hMerge made by the 'recursive' strategy.
+ Case Study 1.Rmd  |   5 [32m+[m[31m-[m
+ Case_Study_1.Rmd  |  96 [32m++++++++++++++++++++++[m
+ Case_Study_1.html | 394 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ 3 files changed, 493 insertions(+), 2 deletions(-)
+ create mode 100644 Case_Study_1.Rmd
+ create mode 100644 Case_Study_1.html
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .

@@ -73,7 +73,8 @@ To begin determining which factors are associated with birth weight, we first in
 #Numerical Variables: Age, gestation, plurality, parity
 
 ```{r}
-
+# Parity
+pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 
 ```
 
@@ -98,7 +99,7 @@ Our findings show that there is a ___ relationship between...
 
 #Linear Regression Model 
 
-Potentially square gestation because it appears to be exhibit a logistic relationship with
+Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
 ```{r}
 
