@@ -209,6 +209,11 @@ Finally, we took a look at the distributions and means of birthweights across di
 
 ```
 
+#Potentially Determine Interaction Variables
+
+```{r_ekim}
+
+```
 
 #Linear Regression Model 
 
