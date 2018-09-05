@@ -15,7 +15,7 @@ Interim report (9/7): produce a 5 page (maximum) report using R markdown that cl
 
 #Library of Packages
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 library(dplyr)
 library(magrittr)
 ```
