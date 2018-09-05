@@ -206,7 +206,8 @@ Finally, we took a look at the distributions and means of birthweights across di
 #Data cleaning and tranformation
 
 ```{r}
-
+# Center Mother's age
+bdclean$MAGE_center = bdclean$MAGE - mean(bdclean$MAGE)
 ```
 
 #Linear Regression Model 
@@ -215,10 +216,10 @@ For our linear regression model, we wanted to work with the new transformed vari
 
 ```{r}
 #Simple Model with Multiple Categories for Different Amounts of Smoking
-Simple_Model_1 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C + PLUR_new + MAGE + MRACER + PARITY_new, data = bdclean) 
+Simple_Model_1 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean) 
   
 #Simple Model with Smoking as a Binary Variable                  
-Simple_Model_2 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C + PLUR_new + MAGE + MRACER + PARITY_new, data = bdclean)
+Simple_Model_2 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean)
 ```
 
 ```{r}
@@ -232,7 +233,7 @@ summary(Simple_Model_2)
 ```{r}
 bdclean$GEST_C_sq = (bdclean$GEST_C)^2
 
-Simple_Model_3 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C + GEST_C_sq + PLUR_new + MAGE + MRACER + PARITY_new, data = bdclean)
+Simple_Model_3 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C + GEST_C_sq + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean)
 
 summary(Simple_Model_3)
 ```
