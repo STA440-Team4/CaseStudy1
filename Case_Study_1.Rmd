@@ -159,9 +159,25 @@ Our findings show that there is a ___ relationship between...
 For our linear regression model, we wanted to work with the new transformed variables we had created and use backward selection. 
 Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
-```{r}
 
+#Total Pregnancies (Including This One)
+
+```{r}
+bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
+bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
+boxplot(BWTG_C~PARITY_new,data=bdclean,col="blue",ylab="Birthweight (grams)",xlab="number of pregnancy")
 ```
+
+
+#Plurality
+
+```{r}
+bdclean$PLUR_new[bdclean$PLUR == 1] = "first child"
+bdclean$PLUR_new[bdclean$PLUR >1]=">1 children"
+boxplot(BWTG_C~PLUR_new,data=bdclean,col="green",ylab="Birthweight (grams)",xlab="number of children")
+```
+
+
 
 #Other Models
 
