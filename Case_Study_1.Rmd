@@ -15,7 +15,7 @@ Interim report (9/7): produce a 5 page (maximum) report using R markdown that cl
 
 #Library of Packages
 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 library(dplyr)
 library(magrittr)
 ```
@@ -189,7 +189,6 @@ bdclean$CIGLN_bucket[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
 boxplot(BWTG_C~CIGLN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (dichotomized)", ylab = "Birthweight in Grams")
 
 boxplot(BWTG_C~CIGLN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (in bucket)", ylab = "Birthweight in Grams")
-
 ```
 
 ##Boxplot: Gender of Child vs Birthweight
@@ -235,12 +234,11 @@ Similarly from the box plot average birthweight appears to be consistent across 
 #Total Pregnancies (Including This One) and Plurality
 
 ```{r}
-
 bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
 bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
 boxplot(BWTG_C~PARITY_new,data=bdclean,col="blue",ylab="Birthweight (grams)",xlab="number of pregnancy")
 
-bdclean$PLUR_new[bdclean$PLUR == 1] = "first child"
+bdclean$PLUR_new[bdclean$PLUR == 1] = "singleton"
 bdclean$PLUR_new[bdclean$PLUR >1]=">1 children"
 boxplot(BWTG_C~PLUR_new,data=bdclean,col="green",ylab="Birthweight (grams)",xlab="number of children")
 ```
@@ -255,33 +253,66 @@ bdclean %>% group_by(YOB) %>% summarize(mean_birthweight = mean(BWTG_C))
 
 Finally, we took a look at the distributions and means of birthweights across different years. Looking at the means, we found no reason to believe that the year of birth had an impact on the birth weight of the mother, and any significance found through an anova test, could probably be attributed to the large sample size. Thus, we chose not to include this variable as a predictor moving forward. 
 
-#Data cleaning and tranformation
+#Data cleaning and Tranformation
 
 ```{r}
+# Center Mother's age
+bdclean$MAGE_center = bdclean$MAGE - mean(bdclean$MAGE)
 
+# Center Gestation
+bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
 ```
-
 
 #Linear Regression Model 
 
-For our linear regression model, we wanted to work with the new transformed variables we had created, exluding YOB, and use backward selection. 
+By the end of our exploratory data analysis, we determined that we wanted to work with all of the variables except for year of birth, and we had transformed a few of the numerical variables to categorical variables. Our first simple linear model yielded a model with an R^2 around .4993 with and R^2 adjusted of .4992. Here, we kept the cigarettes smoked in separate buckets. We also tried a simple model with cigarettes smoked as a binary variable, which yielded a similar R^2. 
 
 ```{r}
 #Simple Model with Multiple Categories for Different Amounts of Smoking
-Simple_Model_1 <- lm(BWTG_C ~ male, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new) 
-  
+Simple_Model_1 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C_center + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean) 
+
+summary(Simple_Model_1)
+
 #Simple Model with Smoking as a Binary Variable                  
-Simple_Model_2 <- lm(BWTG_C ~ male, CORES, CIGPN_dichotic, CIGFN_dichotic, CIGSN_dichotic, CIGLN_dichotic, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new)
+Simple_Model_2 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C_center + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean)
+
+summary(Simple_Model_2)
 ```
 
-Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
-
-#Other Models
+#Trying More Interesting Models
 
 ```{r}
+#Let's try squaring gestation since this variable seemed to have a curve in our EDA. 
 
+bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
 
+Simple_Model_3 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C_center + GEST_C_center_sq + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean)
+
+summary(Simple_Model_3)
 ```
+
+In this third model,we achieved an R^2 around 0.4994. Based on this model, we also saw that the variable CIGPN_dichotic was not significant. 
+
+#Let's Try Some Interaction Variables
+
+Here, we added interaction variables between age and cigarette smoking, age and plurality, age and parity and cigarette smoking and race. Using backward selection based on the P-Value criteria and systematically removing variables who have the highest p-value in each iteration, we end up with the model below, which has an R^2 of 0.4999 and and R^2 adjusted of 0.4998. We used this type of model selection to arrive at a model with high predictability.
+
+```{r}
+Interaction_Model <- lm(BWTG_C ~ male + as.factor(CORES) + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C_center + GEST_C_center_sq + PLUR_new + MAGE_center + MRACER + PARITY_new + PARITY_new*MAGE_center + PLUR_new*MAGE_center + CIGFN_dichotic*MAGE_center + CIGSN_dichotic*MAGE_center + CIGLN_dichotic*MAGE_center + CIGFN_dichotic*MRACER + CIGSN_dichotic*MRACER + CIGLN_dichotic*MRACER, data = bdclean)
+
+#Backward Selection based on P-value, order of deletion:
+#1. CIGLN_dichotic*MRACER // P-value=0.577 
+#2. CIGSN_dichotic:MAGE_center // P-value = 0.318992 
+#3. CIGLN_dichotic: // P-value = 1 0.116130   
+
+#Final Model:
+
+Interaction_Model_Final <- lm(BWTG_C ~ male + as.factor(CORES) + CIGFN_dichotic + CIGSN_dichotic + GEST_C_center + GEST_C_center_sq + PLUR_new + MAGE_center + MRACER + PARITY_new + PARITY_new*MAGE_center + PLUR_new*MAGE_center + CIGFN_dichotic*MAGE_center + CIGLN_dichotic + CIGLN_dichotic*MAGE_center + CIGFN_dichotic*MRACER + CIGSN_dichotic*MRACER, data = bdclean)
+summary(Interaction_Model_Final)
+```
+
+Interpretations of the Model:
+
 
 #Impact Of Eliminating Maternal Smoking on Birth Weight in the Population
 
