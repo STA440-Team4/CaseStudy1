@@ -73,7 +73,7 @@ Our findings show that there is a ___ relationship between...
 
 #Linear Regression Model 
 
-Potentially square gestation because it appears to be exhibit a logistic relationship with
+Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
 ```{r}
 
