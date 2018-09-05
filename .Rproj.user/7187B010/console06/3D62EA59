@@ -148,3 +148,124 @@ Auto-merging Case Study 1.Rmd
  create mode 100644 Case_Study_1.Rmd
  create mode 100644 Case_Study_1.html
 ]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git commit m[K-m "merge changes"
+[master a4a2fa8] merge changes
+ Committer: Steven Yang <stevenyang@Stevens-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 13 files changed, 210 insertions(+), 10 deletions(-)
+ rewrite .Rproj.user/7187B010/console06/INDEX001 (76%)
+ create mode 100644 .Rproj.user/7187B010/sources/prop/73AAE022
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/C6F655B9
+ create mode 100644 .Rproj.user/7187B010/sources/s-D95AF720/C6F655B9-contents
+ create mode 100644 .Rproj.user/shared/notebooks/C411E4F-Case_Study_1/1/7187B010D95AF720/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/C411E4F-Case_Study_1/1/s/chunks.json
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git push origin master
+fatal: cannot run rpostback-askpass: No such file or directory
+Username for 'https://github.com': stevn enyang9
+fatal: cannot run rpostback-askpass: No such file or directory
+Password for 'https://stevenyang9@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/STA440-Team4/CaseStudy1.git/'
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git push origin mastercommit -m "merge changes"[7Ppush origin master
+fatal: cannot run rpostback-askpass: No such file or directory
+Username for 'https://github.com': g stevenyang9
+fatal: cannot run rpostback-askpass: No such file or directory
+Password for 'https://stevenyang9@github.com': 
+Counting objects: 93, done.
+Delta compression using up to 12 threads.
+Compressing objects:   1% (1/79)   Compressing objects:   2% (2/79)   Compressing objects:   3% (3/79)   Compressing objects:   5% (4/79)   Compressing objects:   6% (5/79)   Compressing objects:   7% (6/79)   Compressing objects:   8% (7/79)   Compressing objects:  10% (8/79)   Compressing objects:  11% (9/79)   Compressing objects:  12% (10/79)   Compressing objects:  13% (11/79)   Compressing objects:  15% (12/79)   Compressing objects:  16% (13/79)   Compressing objects:  17% (14/79)   Compressing objects:  18% (15/79)   Compressing objects:  20% (16/79)   Compressing objects:  21% (17/79)   Compressing objects:  22% (18/79)   Compressing objects:  24% (19/79)   Compressing objects:  25% (20/79)   Compressing objects:  26% (21/79)   Compressing objects:  27% (22/79)   Compressing objects:  29% (23/79)   Compressing objects:  30% (24/79)   Compressing objects:  31% (25/79)   Compressing objects:  32% (26/79)   Compressing objects:  34% (27/79)   Compressing objects:  35% (28/79)   Compressing objects:  36% (29/79)   Compressing objects:  37% (30/79)   Compressing objects:  39% (31/79)   Compressing objects:  40% (32/79)   Compressing objects:  41% (33/79)   Compressing objects:  43% (34/79)   Compressing objects:  44% (35/79)   Compressing objects:  45% (36/79)   Compressing objects:  46% (37/79)   Compressing objects:  48% (38/79)   Compressing objects:  49% (39/79)   Compressing objects:  50% (40/79)   Compressing objects:  51% (41/79)   Compressing objects:  53% (42/79)   Compressing objects:  54% (43/79)   Compressing objects:  55% (44/79)   Compressing objects:  56% (45/79)   Compressing objects:  58% (46/79)   Compressing objects:  59% (47/79)   Compressing objects:  60% (48/79)   Compressing objects:  62% (49/79)   Compressing objects:  63% (50/79)   Compressing objects:  64% (51/79)   Compressing objects:  65% (52/79)   Compressing objects:  67% (53/79)   Compressing objects:  68% (54/79)   Compressing objects:  69% (55/79)   Compressing objects:  70% (56/79)   Compressing objects:  72% (57/79)   Compressing objects:  73% (58/79)   Compressing objects:  74% (59/79)   Compressing objects:  75% (60/79)   Compressing objects:  77% (61/79)   Compressing objects:  78% (62/79)   Compressing objects:  79% (63/79)   Compressing objects:  81% (64/79)   Compressing objects:  82% (65/79)   Compressing objects:  83% (66/79)   Compressing objects:  84% (67/79)   Compressing objects:  86% (68/79)   Compressing objects:  87% (69/79)   Compressing objects:  88% (70/79)   Compressing objects:  89% (71/79)   Compressing objects:  91% (72/79)   Compressing objects:  92% (73/79)   Compressing objects:  93% (74/79)   Compressing objects:  94% (75/79)   Compressing objects:  96% (76/79)   Compressing objects:  97% (77/79)   Compressing objects:  98% (78/79)   Compressing objects: 100% (79/79)   Compressing objects: 100% (79/79), done.
+Writing objects:   1% (1/93)   Writing objects:   2% (2/93)   Writing objects:   3% (3/93)   Writing objects:   4% (4/93)   Writing objects:   5% (5/93)   Writing objects:   6% (6/93)   Writing objects:   7% (7/93)   Writing objects:   8% (8/93)   Writing objects:   9% (9/93)   Writing objects:  10% (10/93)   Writing objects:  11% (11/93)   Writing objects:  13% (13/93)   Writing objects:  15% (14/93)   Writing objects:  16% (15/93)   Writing objects:  17% (16/93)   Writing objects:  18% (17/93)   Writing objects:  19% (18/93)   Writing objects:  20% (19/93)   Writing objects:  21% (20/93)   Writing objects:  22% (21/93)   Writing objects:  23% (22/93)   Writing objects:  24% (23/93)   Writing objects:  25% (24/93)   Writing objects:  26% (25/93)   Writing objects:  30% (28/93)   Writing objects:  31% (29/93)   Writing objects:  32% (30/93)   Writing objects:  33% (31/93)   Writing objects:  34% (32/93)   Writing objects:  35% (33/93)   Writing objects:  36% (34/93)   Writing objects:  37% (35/93)   Writing objects:  38% (36/93)   Writing objects:  39% (37/93)   Writing objects:  40% (38/93)   Writing objects:  41% (39/93)   Writing objects:  43% (40/93)   Writing objects:  44% (41/93)   Writing objects:  45% (42/93)   Writing objects:  46% (43/93)   Writing objects:  47% (44/93)   Writing objects:  48% (45/93)   Writing objects:  49% (46/93)   Writing objects:  50% (47/93)   Writing objects:  51% (48/93)   Writing objects:  52% (49/93)   Writing objects:  53% (50/93)   Writing objects:  54% (51/93)   Writing objects:  55% (52/93)   Writing objects:  56% (53/93)   Writing objects:  58% (54/93)   Writing objects:  59% (55/93)   Writing objects:  60% (56/93)   Writing objects:  61% (57/93)   Writing objects:  62% (58/93)   Writing objects:  63% (59/93)   Writing objects:  64% (60/93)   Writing objects:  65% (61/93)   Writing objects:  66% (62/93)   Writing objects:  67% (63/93)   Writing objects:  68% (64/93)   Writing objects:  69% (65/93)   Writing objects:  70% (66/93)   Writing objects:  72% (67/93)   Writing objects:  73% (68/93)   Writing objects:  74% (69/93)   Writing objects:  75% (70/93)   Writing objects:  76% (71/93)   Writing objects:  77% (72/93)   Writing objects:  78% (73/93)   Writing objects:  79% (74/93)   Writing objects:  80% (75/93)   Writing objects:  81% (76/93)   Writing objects:  82% (77/93)   Writing objects:  83% (78/93)   Writing objects:  84% (79/93)   Writing objects:  86% (80/93)   Writing objects:  87% (81/93)   Writing objects:  88% (82/93)   Writing objects:  89% (83/93)   Writing objects:  90% (84/93)   Writing objects:  91% (85/93)   Writing objects:  92% (86/93)   Writing objects:  93% (87/93)   Writing objects:  94% (88/93)   Writing objects:  95% (89/93)   Writing objects:  96% (90/93)   Writing objects:  97% (91/93)   Writing objects:  98% (92/93)   Writing objects: 100% (93/93)   Writing objects: 100% (93/93), 13.62 KiB | 84.00 KiB/s, done.
+Total 93 (delta 28), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/28)   [Kremote: Resolving deltas:  14% (4/28)   [Kremote: Resolving deltas:  25% (7/28)   [Kremote: Resolving deltas:  32% (9/28)   [Kremote: Resolving deltas:  35% (10/28)   [Kremote: Resolving deltas:  46% (13/28)   [Kremote: Resolving deltas:  50% (14/28)   [Kremote: Resolving deltas:  60% (17/28)   [Kremote: Resolving deltas:  75% (21/28)   [Kremote: Resolving deltas:  89% (25/28)   [Kremote: Resolving deltas: 100% (28/28)   [Kremote: Resolving deltas: 100% (28/28), done.[K
+To https://github.com/STA440-Team4/CaseStudy1.git
+   4c52b7c..a4a2fa8  master -> master
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git re[Km S[K[K[K[K[K[K[K[Kls
+Case Study 1.Rmd		InClass.R			Yr1116Birth.csv
+Case_Study_1.Rmd		README.md
+Case_Study_1.html		STA440 Case Study 1.Rproj
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git rm STA44[K[K[K[K[K"STA440 CAse [K[K[K[K[KCas[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgit pull origin amster[K[K[K[K[K[Kmaster
+remote: Counting objects: 2, done.[K
+remote: Compressing objects:  50% (1/2)   [Kremote: Compressing objects: 100% (2/2)   [Kremote: Compressing objects: 100% (2/2), done.[K
+remote: Total 2 (delta 1), reused 0 (delta 0), pack-reused 0[K
+Unpacking objects:  50% (1/2)   Unpacking objects: 100% (2/2)   Unpacking objects: 100% (2/2), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   a4a2fa8..8944bba  master     -> origin/master
+Updating a4a2fa8..8944bba
+Fast-forward
+ STA440 Case Study 1.Rproj | 13 [31m-------------[m
+ 1 file changed, 13 deletions(-)
+ delete mode 100644 STA440 Case Study 1.Rproj
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 23, done.[K
+remote: Compressing objects:   7% (1/14)   [Kremote: Compressing objects:  14% (2/14)   [Kremote: Compressing objects:  21% (3/14)   [Kremote: Compressing objects:  28% (4/14)   [Kremote: Compressing objects:  35% (5/14)   [Kremote: Compressing objects:  42% (6/14)   [Kremote: Compressing objects:  50% (7/14)   [Kremote: Compressing objects:  57% (8/14)   [Kremote: Compressing objects:  64% (9/14)   [Kremote: Compressing objects:  71% (10/14)   [Kremote: Compressing objects:  78% (11/14)   [Kremote: Compressing objects:  85% (12/14)   [Kremote: Compressing objects:  92% (13/14)   [Kremote: Compressing objects: 100% (14/14)   [Kremote: Compressing objects: 100% (14/14), done.[K
+remote: Total 23 (delta 9), reused 13 (delta 5), pack-reused 0[K
+Unpacking objects:   4% (1/23)   Unpacking objects:   8% (2/23)   Unpacking objects:  13% (3/23)   Unpacking objects:  17% (4/23)   Unpacking objects:  21% (5/23)   Unpacking objects:  26% (6/23)   Unpacking objects:  30% (7/23)   Unpacking objects:  34% (8/23)   Unpacking objects:  39% (9/23)   Unpacking objects:  43% (10/23)   Unpacking objects:  47% (11/23)   Unpacking objects:  52% (12/23)   Unpacking objects:  56% (13/23)   Unpacking objects:  60% (14/23)   Unpacking objects:  65% (15/23)   Unpacking objects:  69% (16/23)   Unpacking objects:  73% (17/23)   Unpacking objects:  78% (18/23)   Unpacking objects:  82% (19/23)   Unpacking objects:  86% (20/23)   Unpacking objects:  91% (21/23)   Unpacking objects:  95% (22/23)   Unpacking objects: 100% (23/23)   Unpacking objects: 100% (23/23), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   8944bba..0724763  master     -> origin/master
+Updating 8944bba..0724763
+Fast-forward
+ .RData                                         | Bin [31m0[m -> [32m23[m bytes
+ .Rproj.user/shared/notebooks/patch-chunk-names |   0
+ .Rproj.user/shared/notebooks/paths             |   6 [31m------[m
+ .gitignore                                     |   1 [32m+[m
+ CaseStudy1.Rproj                               |  13 [32m+++++++++++++[m
+ Case_Study_1.Rmd                               |   1 [32m+[m
+ README.md                                      |   2 [32m+[m[31m-[m
+ 7 files changed, 16 insertions(+), 7 deletions(-)
+ create mode 100644 .RData
+ delete mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ delete mode 100644 .Rproj.user/shared/notebooks/paths
+ create mode 100644 CaseStudy1.Rproj
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git config --global user.name "[K'stevenyang9"[K'
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git config --globval user.[K[K[K[K[K[K[K[K[Kal user.email ''s'g'y'a'n'g'9'@'g'm'a'i'l'.'c'o'm'
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git config --global credential.helper osxkeychain
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+remote: Counting objects: 14, done.[K
+remote: Compressing objects:  14% (1/7)   [Kremote: Compressing objects:  28% (2/7)   [Kremote: Compressing objects:  42% (3/7)   [Kremote: Compressing objects:  57% (4/7)   [Kremote: Compressing objects:  71% (5/7)   [Kremote: Compressing objects:  85% (6/7)   [Kremote: Compressing objects: 100% (7/7)   [Kremote: Compressing objects: 100% (7/7), done.[K
+remote: Total 14 (delta 9), reused 12 (delta 7), pack-reused 0[K
+Unpacking objects:   7% (1/14)   Unpacking objects:  14% (2/14)   Unpacking objects:  21% (3/14)   Unpacking objects:  28% (4/14)   Unpacking objects:  35% (5/14)   Unpacking objects:  42% (6/14)   Unpacking objects:  50% (7/14)   Unpacking objects:  57% (8/14)   Unpacking objects:  64% (9/14)   Unpacking objects:  71% (10/14)   Unpacking objects:  78% (11/14)   Unpacking objects:  85% (12/14)   Unpacking objects:  92% (13/14)   Unpacking objects: 100% (14/14)   Unpacking objects: 100% (14/14), done.
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+   0724763..7386a36  master     -> origin/master
+Updating 0724763..7386a36
+error: Your local changes to the following files would be overwritten by merge:
+	Case_Study_1.Rmd
+Please commit your changes or stash them before you merge.
+Aborting
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git pull origin master
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+Updating 0724763..7386a36
+error: Your local changes to the following files would be overwritten by merge:
+	Case_Study_1.Rmd
+Please commit your changes or stash them before you merge.
+Aborting
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .Saved working directory and index state WIP on master: 4038077 Merge branch 'master' of https://github.com/STA440-Team4/CaseStudy1
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ gti[K[Kit pull origin master
+From https://github.com/STA440-Team4/CaseStudy1
+ * branch            master     -> FETCH_HEAD
+Auto-merging Case_Study_1.Rmd
+[?2004hMerge made by the 'recursive' strategy.
+ Case_Study_1.Rmd  |    53 [32m+[m[31m-[m
+ Case_Study_1.html | 12096 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m[31m--[m
+ 2 files changed, 11909 insertions(+), 240 deletions(-)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git stash drop
+Dropped refs/stash@{0} (21c60fe10f6a0ae768bdbec6b0310eb5f42debe8)
+]0;~/Documents/Duke/Duke 2018-2019 Fall/STA440 Case Studies/STA440 Case Study 1Stevens-MacBook-Pro:STA440 Case Study 1 stevenyang$ git add .
