@@ -145,8 +145,7 @@ boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother"
 summary(aov(BWTG_C ~ as.factor(MRACER), data = bdclean))
 ```
 
-From this boxplot it seems like the mean birthweight is quite consistent throughout all the categories. For the races that have more data points than other, the standard deviations are larger, however from the ANOVA test (it appears that there is not a significant relationship between birthweight and race of mother??). Therefore we may not include this predictor in the final model.  
-
+From this boxplot it seems like the mean birthweight is quite consistent throughout all the categories. For the races that have more data points than others, the standard deviations are larger. Because of these observations we decided to do an ANOVA test (and it appears from the results that at least one mean is significantly different from the others, which suggests there could be a relationship between birthweight and the race of mother). It will make sense to figure out which race deviates most from others (#TODO). Currently it seems like race of mother would be a valuable predictor of birthweight.
 
 ##Boxplot: hispanic origin of mother vs birthweight
 ```{r}
@@ -154,8 +153,8 @@ boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origi
 
 summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 ```
-Similarly from the box plot mean birthweight appears to be consistent across different categories of different sub-categories of mother's hispanic origin. Depending on the number of data points, standard deviation varies among the categories, however from an ANOVA test ----
 
+Similarly from the box plot mean birthweight appears to be consistent across different categories of different sub-categories of mother's hispanic origin. Depending on the number of data points, standard deviation varies among the categories. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. It will make sense to figure out which category deviates most from others (#TODO). Currently it seems like hispanic origin of mother would be a valuable predictor of birthweight.
 
 
 #Average Number Of Cigarettes Smoked Per Day Variables
