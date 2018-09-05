@@ -41,6 +41,12 @@ bdclean=na.omit(birth_data)
 attach(bdclean)
 ```
 
+```{r}
+# Parity
+pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
+
+```
+
 #Factors Associated with Birth Weight
 
 To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
