@@ -22,7 +22,7 @@ library(magrittr)
 
 #Data Import and Cleaning
 
-```{r}
+```{r, echo=FALSE}
 #Read in birth data
 o_data <- read.csv("Yr1116Birth.csv", 
                    na.strings=c("9","99", "9999"))
@@ -49,9 +49,9 @@ To begin determining which factors are associated with birth weight, we first in
 
 #Numerical Variables: Age, gestation, plurality, parity
 
-```{r}
+```{r, cache = TRUE}
 # Parity
-pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
+#pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 
 ```
 
@@ -88,7 +88,6 @@ bdclean$CIGFN[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="Four packs to five packs"
 boxplot(BWTG_C~CIGFN, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day
 First Three Months of Pregnancy", ylab = "Birthweight in Grams")
 ```
-
 
 
 ##Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
