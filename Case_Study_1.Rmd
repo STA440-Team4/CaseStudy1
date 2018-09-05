@@ -41,31 +41,6 @@ bdclean=na.omit(birth_data)
 attach(bdclean)
 ```
 
-#EDA
-
-##Boxplot: gender of child vs birthweight
-```{r}
-males = subset(bdclean, male==1)
-summary(males$BWTG)
-females = subset(bdclean, male==0)
-summary(females$BWTG)
-boxplot(BWTG~male,col="blue",ylab="Birthweight (grams)",xlab="Gender (female = 0, male = 1)")
-```
-
-##Boxplot: race of mother vs birthweight
-```{r}
-boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother")
-```
-
-##Boxplot: hispanic origin of mother vs birthweight
-```{r}
-boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
-```
-
-
-
-```
-
 #Factors Associated with Birth Weight
 
 To begin determining which factors are associated with birth weight, we first investigated each variable and made a decision on whether we wanted to treat it as continous or categorical. We then did some preliminary exploratory data analysis using scatter plots, box plots, correlation matrices and histograms. We present our findings on the relationship between birth weight and each of these variables below.
