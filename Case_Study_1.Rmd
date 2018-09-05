@@ -188,7 +188,7 @@ bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
 bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
 boxplot(BWTG_C~PARITY_new,data=bdclean,col="blue",ylab="Birthweight (grams)",xlab="number of pregnancy")
 
-bdclean$PLUR_new[bdclean$PLUR == 1] = "first child"
+bdclean$PLUR_new[bdclean$PLUR == 1] = "singleton"
 bdclean$PLUR_new[bdclean$PLUR >1]=">1 children"
 boxplot(BWTG_C~PLUR_new,data=bdclean,col="green",ylab="Birthweight (grams)",xlab="number of children")
 ```
@@ -209,18 +209,34 @@ Finally, we took a look at the distributions and means of birthweights across di
 
 ```
 
-
 #Linear Regression Model 
 
 For our linear regression model, we wanted to work with the new transformed variables we had created, exluding YOB, and use backward selection. 
 
 ```{r}
 #Simple Model with Multiple Categories for Different Amounts of Smoking
-Simple_Model_1 <- lm(BWTG_C ~ male, CORES, CIGPN_bucket, CIGFN_bucket, CIGSN_bucket, CIGLN_bucket, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new) 
+Simple_Model_1 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C + PLUR_new + MAGE + MRACER + PARITY_new, data = bdclean) 
   
 #Simple Model with Smoking as a Binary Variable                  
-Simple_Model_2 <- lm(BWTG_C ~ male, CORES, CIGPN_dichotic, CIGFN_dichotic, CIGSN_dichotic, CIGLN_dichotic, GEST_C, PLUR_new, MAGE, MRACER, PARITY_new)
+Simple_Model_2 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C + PLUR_new + MAGE + MRACER + PARITY_new, data = bdclean)
 ```
+
+```{r}
+summary(Simple_Model_1)
+```
+
+```{r}
+summary(Simple_Model_2)
+```
+
+```{r}
+bdclean$GEST_C_sq = (bdclean$GEST_C)^2
+
+Simple_Model_3 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C + GEST_C_sq + PLUR_new + MAGE + MRACER + PARITY_new, data = bdclean)
+
+summary(Simple_Model_3)
+```
+
 
 Potentially square gestation because it appears to be exhibit a logistic relationship with birth weight.
 
