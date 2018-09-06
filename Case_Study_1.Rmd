@@ -88,19 +88,19 @@ motherageplot = ggplot(MAGEmean, aes(x=MAGE,y=BWTG)) + geom_point() + theme(axis
 grid.arrange(parityplot, pluralityplot, gestationplot, motherageplot, ncol=2, nrow=2)
 ```
 
+Due to the sheer number of points in our data set, it was difficult to determine trends precisely, especially where points overlapped. Therefore, we took the average birth weight for each value of each numerical variable. We plotted the average birth weight against these numerical values and found some interesting trends. Parity seems to have a slightly quadratic trend, with higher birth weights at low and at high parity, with a dip in the middle. Greater plurality seems to negatively correlate with birthweight, also possibly with a quadratic trend, with the greatest difference in birthweight between having one child and having twins.For gestation, there seems to be a quadratic correlation with birthweight. The graph suggests that we may need to perform a transformation with an order greater than 2.  Finally, for mother's age, there seems to be a negative quadratic relationship with birth weight. I.e. very young and older mothers have lower birth weights than mothers in the middle. In conclusion, these graphs of averages suggest that we will need to test out polynomial transformations for all these variables.
+
 #Investigating Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
 ##Birthweight vs Average Number of Cigarettes Smoked Per Day
 
 ```{r, echo = FALSE}
-#Cigarette values
+#Aggregate means for cigarette values (to better view trends, considering the number of data points)
 CIGPNmean = aggregate(BWTG ~ CIGPN, bdclean, mean)
 CIGFNmean = aggregate(BWTG ~ CIGFN, bdclean, mean)
 CIGSNmean = aggregate(BWTG ~ CIGSN, bdclean, mean)
 CIGLNmean = aggregate(BWTG ~ CIGLN, bdclean, mean)
 ```
-
-Due to the sheer number of points in our data set, it was difficult to determine trends precisely, especially where points overlapped. Therefore, we took the average birth weight for each value of each numerical variable. We plotted the average birth weight against these numerical values and found some interesting trends. Parity seems to have a slightly quadratic trend, with higher birth weights at low and at high parity, with a dip in the middle. Greater plurality seems to negatively correlate with birthweight, also possibly with a quadratic trend, with the greatest difference in birthweight between having one child and having twins.For gestation, there seems to be a quadratic correlation with birthweight. The graph suggests that we may need to perform a transformation with an order greater than 2.  Finally, for mother's age, there seems to be a negative quadratic relationship with birth weight. I.e. very young and older mothers have lower birth weights than mothers in the middle. In conclusion, these graphs of averages suggest that we will need to test out polynomial transformations for all these variables.
 
 ```{r,echo=FALSE}
 CIGPNplot = ggplot(CIGPNmean, aes(x=CIGPN,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
