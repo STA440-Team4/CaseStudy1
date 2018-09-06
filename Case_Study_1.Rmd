@@ -1,23 +1,27 @@
 ---
 title: "Case Study 1"
-author: "Ekim Buyuk; "
+author: 'Ekim Buyuk; Debra Jiang; Katie Tsang; Steven Yang; Bihan Zhuang'
 date: "9/4/2018"
-output: html_document
+output:
+  pdf_document: default
 ---
 
-Objectives:
+<!-- Objectives: -->
 
-- determine which factors are associated with birth weight and characterize the relationship between each factor and birth weight
-- explore whether fit of a linear regression model is adequate or whether robust regression methods are needed
-- estimate the impact of eliminating maternal smoking on birth weight in a population
+<!-- - determine which factors are associated with birth weight and characterize the relationship between each factor and birth weight -->
+<!-- - explore whether fit of a linear regression model is adequate or whether robust regression methods are needed -->
+<!-- - estimate the impact of eliminating maternal smoking on birth weight in a population -->
 
-Interim report (9/7): produce a 5 page (maximum) report using R markdown that clearly describes your process for model selection and validation. Provide clear interpretations of the associations between each predictor and birth weight in layperson’s language, including characterization of uncertainty. Figures may be included as appropriate. Code should be fully reproducible.
+<!-- Interim report (9/7): produce a 5 page (maximum) report using R markdown that clearly describes your process for model selection and validation. Provide clear interpretations of the associations between each predictor and birth weight in layperson’s language, including characterization of uncertainty. Figures may be included as appropriate. Code should be fully reproducible. -->
 
-#Library of Packages
+<!-- #Library of Packages -->
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 library(dplyr)
 library(magrittr)
+#Used to arrange grids
+library(gridExtra)
+library(ggplot2)
 ```
 
 #Data Import and Cleaning
@@ -50,12 +54,14 @@ To begin determining which factors are associated with birth weight, we first in
 
 #Continous Variables: Age, gestation, plurality, parity
 
-```{r, cache = TRUE}
+In order to explore the possible relationships between numerical variables and birth weight, we paired and plotted the values in a matrix. We noticed that the birth weight vs. parity and birth weight vs. plurality plots fanned left, suggesting non-constant variance. We could not notice any clear correlation between birth weight and a mother's age. The strongest correlation we saw was in birth weight vs. gestation, which seems to have a slight curve in its positive trend. This would suggest that we need to use a logistic regression for this variable, or transform the gestation variable by squaring it before performing linear regression.
+
+```{r, cache = TRUE, echo = FALSE}
 # Parity
 #pairs(~BWTG + PARITY + PLUR + GEST + MAGE, data = bdclean)
 ```
 
-```{r, eval = FALSE}
+```{r, echo = FALSE}
 #Finding means for numerical values
 PARITYmean = aggregate(BWTG ~ PARITY, bdclean, mean)
 PLURmean = aggregate(BWTG ~ PLUR, bdclean, mean)
@@ -63,28 +69,65 @@ GESTmean = aggregate(BWTG ~ GEST, bdclean, mean)
 MAGEmean = aggregate(BWTG ~ MAGE, bdclean, mean)
 ```
 
-```{r}
-plot(BWTG ~ PARITY, data = PARITYmean)
-plot(BWTG ~ PLUR, data = PLURmean)
-plot(BWTG ~ GEST, data = GESTmean)
-plot(BWTG ~ MAGE, data = MAGEmean)
+```{r, echo = FALSE}
+
+# plot(BWTG ~ PARITY, data = PARITYmean)
+# plot(BWTG ~ PLUR, data = PLURmean)
+# plot(BWTG ~ GEST, data = GESTmean)
+# plot(BWTG ~ MAGE, data = MAGEmean)
+
+parityplot = ggplot(PARITYmean, aes(x=PARITY,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+pluralityplot = ggplot(PLURmean, aes(x=PLUR,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+gestationplot = ggplot(GESTmean, aes(x=GEST,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+motherageplot = ggplot(MAGEmean, aes(x=MAGE,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+
+grid.arrange(parityplot, pluralityplot, gestationplot, motherageplot, ncol=2, nrow=2)
 ```
 
-In order to explore the possible relationships between numerical variables and birth weight, we paired and plotted the values in a matrix. We noticed that the birth weight vs. parity and birth weight vs. plurality plots fanned left, suggesting non-constant variance. We could not notice any clear correlation between birth weight and a mother's age. The strongest correlation we saw was in birth weight vs. gestation, which seems to have a slight curve in its positive trend. This would suggest that we need to use a logistic regression for this variable, or transform the gestation variable by squaring it before performing linear regression.
+#Investigating Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
 
-Due to the sheer number of points in our data set, it was difficult to determine trends precisely, especially where points overlapped. Therefore, we took the average birth weight for each value of each numerical variable. We plotted the average birth weight against these numerical values and found some interesting trends. Parity seems to have a slightly quadratic trend, with higher birth weights at low and at high parity, with a dip in the middle. Greater plurality seems to negatively correlate with birthweight, also possibly with a quadratic trend, with the greatest difference in birthweight between having one child and having twins.For gestation, there seems to be a quadratic correlation with birthweight. The graph suggests that we may need to perform a transformation with an order greater than 2.  Finally, for mother's age, there seems to be a negative quadratic relationship with birth weight. I.e. very young and older mothers have lower birth weights than mothers in the middle. In conclusion, these graphs of averages suggest that we will need to test out polynomial transformations for all these variables.
+##Birthweight vs Average Number of Cigarettes Smoked Per Day
 
-#Categorical Variables: Counties, Race, Hispanic Origin and Cigarettes Smoked
-
-##Average Number Of Cigarettes Smoked Per Day Variables
-
-```{r, eval = FALSE}
+```{r, echo = FALSE}
 #Cigarette values
 CIGPNmean = aggregate(BWTG ~ CIGPN, bdclean, mean)
 CIGFNmean = aggregate(BWTG ~ CIGFN, bdclean, mean)
 CIGSNmean = aggregate(BWTG ~ CIGSN, bdclean, mean)
 CIGLNmean = aggregate(BWTG ~ CIGLN, bdclean, mean)
+```
 
+Due to the sheer number of points in our data set, it was difficult to determine trends precisely, especially where points overlapped. Therefore, we took the average birth weight for each value of each numerical variable. We plotted the average birth weight against these numerical values and found some interesting trends. Parity seems to have a slightly quadratic trend, with higher birth weights at low and at high parity, with a dip in the middle. Greater plurality seems to negatively correlate with birthweight, also possibly with a quadratic trend, with the greatest difference in birthweight between having one child and having twins.For gestation, there seems to be a quadratic correlation with birthweight. The graph suggests that we may need to perform a transformation with an order greater than 2.  Finally, for mother's age, there seems to be a negative quadratic relationship with birth weight. I.e. very young and older mothers have lower birth weights than mothers in the middle. In conclusion, these graphs of averages suggest that we will need to test out polynomial transformations for all these variables.
+
+```{r,echo=FALSE}
+CIGPNplot = ggplot(CIGPNmean, aes(x=CIGPN,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+CIGFNplot = ggplot(CIGFNmean, aes(x=CIGFN,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+CIGSNplot = ggplot(CIGSNmean, aes(x=CIGSN,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+CIGLNplot = ggplot(CIGLNmean, aes(x=CIGLN,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+
+# plot(BWTG ~ CIGPN, data = CIGPNmean)
+# plot(BWTG ~ CIGFN, data = CIGFNmean)
+# plot(BWTG ~ CIGSN, data = CIGSNmean)
+# plot(BWTG ~ CIGLN, data = CIGLNmean)
+
+grid.arrange(CIGPNplot, CIGFNplot, CIGSNplot, CIGLNplot, ncol=2, nrow=2)
+
+```
+
+
+##Birthweight vs Average Number of Cigarettes (Grouped in Bins)
+We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. With this in mind, it would be more logical to look at cigarettes by pack, rather than account for each individual cigarette.
+
+Moreover, when viewing the average birthweight for across each number of cigarettes, we noticed a fan right pattern for all smoking data. This is likely because very few people will smoke an average of, for example, 60 or 80 cigarettes per day, which leads to higher variability. This fanning started especially around 20 cigarettes, which makes sense considering that a typical pack contains 20 cigarettes. So, we binned 20+ cigarettes and re-plotted. We noticed that for all 4 cases of cigarette data, the birth weight for zero cigarettes was much higher, while the data for 1+ cigarettes fell mostly around the same range.
+
+```{r,echo=FALSE}
 #Cigarette values accounting for packs
 bdclean$CIGPNpack = bdclean$CIGPN
 bdclean$CIGPNpack[CIGPN >= 20] = "20+"
@@ -101,27 +144,32 @@ CIGSNpackmean = aggregate(BWTG ~ CIGSNpack, bdclean, mean)
 bdclean$CIGLNpack = bdclean$CIGLN
 bdclean$CIGLNpack[CIGLN >= 20] = "20+"
 CIGLNpackmean = aggregate(BWTG ~ CIGLNpack, bdclean, mean)
+
+# plot(BWTG ~ CIGPNpack, data = CIGPNpackmean)
+# plot(BWTG ~ CIGFNpack, data = CIGFNpackmean)
+# plot(BWTG ~ CIGSNpack, data = CIGSNpackmean)
+# plot(BWTG ~ CIGLNpack, data = CIGLNpackmean)
+
+#Order row values so that the x axis of graph outputs in numerically increasing order
+#Replacing x=CIGPNpack with x=BWTGrowvalues 
+BWTGrowvalues = c(1,2,13,15:21,3:12,14)
+
+CIGPNpackplot = ggplot(CIGPNpackmean, aes(x=BWTGrowvalues,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+CIGFNpackplot = ggplot(CIGFNpackmean, aes(x=BWTGrowvalues,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+CIGSNpackplot = ggplot(CIGSNpackmean, aes(x=BWTGrowvalues,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+CIGLNpackplot = ggplot(CIGLNpackmean, aes(x=BWTGrowvalues,y=BWTG)) + geom_point() + theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=6,face="bold"))
+
+grid.arrange(CIGPNpackplot, CIGFNpackplot, CIGSNpackplot, CIGLNpackplot, ncol=2, nrow=2)
 ```
-
-```{r}
-plot(BWTG ~ CIGPN, data = CIGPNmean)
-plot(BWTG ~ CIGPNpack, data = CIGPNpackmean)
-plot(BWTG ~ CIGFN, data = CIGFNmean)
-plot(BWTG ~ CIGFNpack, data = CIGFNpackmean)
-plot(BWTG ~ CIGSN, data = CIGSNmean)
-plot(BWTG ~ CIGSNpack, data = CIGSNpackmean)
-plot(BWTG ~ CIGLN, data = CIGLNmean)
-plot(BWTG ~ CIGLNpack, data = CIGLNpackmean)
-```
-
-We noticed a strange phenomenon when we looked at the frequency of reported values for average number of cigarettes smoked per day. It appeared that the number reported was higher for multiples of 10, and specifically very high for the number 20. At first, we were convinced there was some reporting error, but investigating further, we realized that most cigarette packs have either 20 or 25 cigarettes in them. Thus, we realized that responders were most likely responding with the equivalent of one-half, one, one-and-a-half, or two packs a day of smoking in their heads. With this in mind, it would be more logical to look at cigarettes by pack, rather than account for each individual cigarette.
-
-Moreover, when viewing the average birthweight for across each number of cigarettes, we noticed a fan right pattern for all smoking data. This is likely because very few people will smoke an average of, for example, 60 or 80 cigarettes per day, which leads to higher variability. This fanning started especially around 20 cigarettes, which makes sense considering that a typical pack contains 20 cigarettes. So, we binned 20+ cigarettes and re-plotted. We noticed that for all 4 cases of cigarette data, the birth weight for zero cigarettes was much higher, while the data for 1+ cigarettes fell mostly around the same range.
 
 Therefore, in order to work with this variable, we found it illogical to treat cigarettes as continuous. Instead, we will consider two possibilities: 1) We will distinguish between non-smokers and smokers, making smoking a binary variable. 2) We will distinguish between non-smokers, light smokers, and heavy smokers, making this a categorical variable and creating the bins as follows: 0 cigarettes smoked / 1-20 cigarettes smoked (<1 pack) / 21-40 cigarettes smoked (More than 1 pack but less than 2 packs) and so on.
 
-###Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy
-```{r}
+<!-- ###Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy -->
+```{r, echo=FALSE}
 bdclean$CIGPN_dichotic[bdclean$CIGPN == 0] = 0
 bdclean$CIGPN_dichotic[bdclean$CIGPN > 0] = 1
 
@@ -132,14 +180,14 @@ bdclean$CIGPN_bucket[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="40-60"
 bdclean$CIGPN_bucket[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="60-80"
 bdclean$CIGPN_bucket[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="80-98"
 
-boxplot(BWTG_C~CIGPN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
-
-boxplot(BWTG_C~CIGPN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Three Months Prior to Pregnancy (in buckets)", ylab = "Birthweight in Grams")
+# boxplot(BWTG_C~CIGPN_dichotic, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day Three Months Prior to Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
+# 
+# boxplot(BWTG_C~CIGPN_bucket, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day Three Months Prior to Pregnancy (in buckets)", ylab = "Birthweight in Grams")
 ```
 
 
-###Average number of Cigarettes Smoked per Day First Three Months of Pregnancy
-```{r}
+<!--###Average number of Cigarettes Smoked per Day First Three Months of Pregnancy-->
+```{r,echo=FALSE}
 bdclean$CIGFN_dichotic[bdclean$CIGFN == 0] = 0
 bdclean$CIGFN_dichotic[bdclean$CIGFN > 0] = 1
 
@@ -150,13 +198,13 @@ bdclean$CIGFN_bucket[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="40-60"
 bdclean$CIGFN_bucket[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="60-80"
 bdclean$CIGFN_bucket[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="80-98"
 
-boxplot(BWTG_C~CIGFN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day First Three Months of Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
-
-boxplot(BWTG_C~CIGFN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day First Three Months of Pregnancy (in buckets)", ylab = "Birthweight in Grams")
+# boxplot(BWTG_C~CIGFN_dichotic, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day First Three Months of Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
+# 
+# boxplot(BWTG_C~CIGFN_bucket, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day First Three Months of Pregnancy (in buckets)", ylab = "Birthweight in Grams")
 ```
 
-###Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy
-```{r}
+<!--###Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy-->
+```{r,echo=FALSE}
 bdclean$CIGSN_dichotic[bdclean$CIGSN == 0] = 0
 bdclean$CIGSN_dichotic[bdclean$CIGSN > 0] = 1
 
@@ -167,15 +215,15 @@ bdclean$CIGSN_bucket[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
 bdclean$CIGSN_bucket[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
 bdclean$CIGSN_bucket[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
 
-boxplot(BWTG_C~CIGSN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
-
-boxplot(BWTG_C~CIGSN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Second Three Months of Pregnancy (in bucket)", ylab = "Birthweight in Grams")
+# boxplot(BWTG_C~CIGSN_dichotic, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day Second Three Months of Pregnancy (dichotomized)", ylab = "Birthweight in Grams")
+# 
+# boxplot(BWTG_C~CIGSN_bucket, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day Second Three Months of Pregnancy (in bucket)", ylab = "Birthweight in Grams")
 
 ```
 
-###Average number of Cigarettes Smoked per Day Third or Last Trimester
+<!--###Average number of Cigarettes Smoked per Day Third or Last Trimester-->
 
-```{r}
+```{r,echo=FALSE}
 bdclean$CIGLN_dichotic[bdclean$CIGLN == 0] = 0
 bdclean$CIGLN_dichotic[bdclean$CIGLN > 0] = 1
 
@@ -186,13 +234,13 @@ bdclean$CIGLN_bucket[bdclean$CIGLN >40 &bdclean$CIGLN <=60 ]="40-60"
 bdclean$CIGLN_bucket[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="60-80"
 bdclean$CIGLN_bucket[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
 
-boxplot(BWTG_C~CIGLN_dichotic, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (dichotomized)", ylab = "Birthweight in Grams")
-
-boxplot(BWTG_C~CIGLN_bucket, data = bdclean, xlab = "Average number of Cigarettes Smoked per Day Third or last Trimester (in bucket)", ylab = "Birthweight in Grams")
+# boxplot(BWTG_C~CIGLN_dichotic, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day Third or last Trimester (dichotomized)", ylab = "Birthweight in Grams")
+# 
+# boxplot(BWTG_C~CIGLN_bucket, data = bdclean, xlab = "Average # of Cigarettes Smoked per Day Third or last Trimester (in bucket)", ylab = "Birthweight in Grams")
 ```
 
-##Boxplot: Gender of Child vs Birthweight
-```{r}
+##Gender of Child vs Birthweight
+```{r,echo=FALSE,results="hide"}
 males = subset(bdclean, male==1)
 summary(males$BWTG)
 females = subset(bdclean, male==0)
@@ -206,56 +254,55 @@ sd(females$BWTG)
 #Difference in mean weights based on gender
 t.test(males$BWTG, females$BWTG)
 
-boxplot(BWTG~male,col="blue",ylab="Birthweight (grams)",xlab="Gender (female = 0, male = 1)")
+#boxplot(BWTG~male,col="blue",ylab="Birthweight (grams)",xlab="Gender (female = 0, male = 1)")
 ```
 
 Taking a look at the relationship of the gender of the child v. the birthweight, it does appear that male babies have slightly higher weights than female babies. The median male baby is appxomately 3,374 grams v. 3,250 grams for a female baby. Furthermore, conducting a simple difference in means test, we do find a statistically significant difference between the mean of male babies (~3,322 grams) and female babies (~3,206 grams). Thus, we do think that we should include this variable in our linear regression model, and it does make sense to treat as a categorical variable (female, male). 
 
-##Boxplot: race of mother vs birthweight
-```{r}
-boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother")
+##Race of mother vs birthweight
+```{r,echo=FALSE}
+#boxplot(BWTG~MRACER, col="red",ylab="Birthweight (grams)", xlab="Race of Mother")
 ```
 
-```{r}
+```{r,echo=FALSE,results="hide"}
 summary(aov(BWTG_C ~ as.factor(MRACER), data = bdclean))
 ```
 
-From this boxplot it seems like the average birthweight is consistent throughout all the categories of mother's race, except that African mothers on average give birth to slightly lighter babies than mothers of other races. Because of these observations we decided to do an ANOVA test (and it appears from the results that at least one mean is significantly different from the others, which suggests there could be a relationship between birthweight and the race of mother). It will make sense to figure out which race deviates most from others in this aspect(#TODO). Currently we decided to keep race of mother as categorical predictor of birthweight.
+It seems like the average birthweight is consistent throughout all the categories of mother's race, except that African mothers on average give birth to slightly lighter babies than mothers of other races. Because of these observations we decided to do an ANOVA test (and it appears from the results that at least one mean is significantly different from the others, which suggests there could be a relationship between birthweight and the race of mother). It will make sense to figure out which race deviates most from others in this aspect(#TODO). Currently we decided to keep race of mother as categorical predictor of birthweight.
 
-##Boxplot: hispanic origin of mother vs birthweight
-```{r}
-boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
+##Hispanic origin of mother vs birthweight
+```{r,echo=FALSE,results="hide"}
+#boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
 
 summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 ```
 
-Similarly from the box plot average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will make sense to figure out which category deviates most from others (#TODO). We decided to use hispanic origin of mother as a categorical variable in our model. 
+Similarly, average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will make sense to figure out which category deviates most from others (#TODO). We decided to use hispanic origin of mother as a categorical variable in our model. 
 
-#Total Pregnancies (Including This One) and Plurality
+<!--#Total Pregnancies (Including This One) and Plurality-->
 
-```{r}
+```{r, echo=FALSE}
 bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
 bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
-boxplot(BWTG_C~PARITY_new,data=bdclean,col="blue",ylab="Birthweight (grams)",xlab="number of pregnancy")
+#boxplot(BWTG_C~PARITY_new,data=bdclean,col="blue",ylab="Birthweight (grams)",xlab="number of pregnancy")
 
 bdclean$PLUR_new[bdclean$PLUR == 1] = "singleton"
 bdclean$PLUR_new[bdclean$PLUR >1]=">1 children"
-boxplot(BWTG_C~PLUR_new,data=bdclean,col="green",ylab="Birthweight (grams)",xlab="number of children")
+#boxplot(BWTG_C~PLUR_new,data=bdclean,col="green",ylab="Birthweight (grams)",xlab="number of children")
 ```
-
 
 ##Year of Birth
 
-```{r}
-boxplot(BWTG_C~YOB)
+```{r,echo=FALSE,results="hide"}
+#boxplot(BWTG_C~YOB)
 bdclean %>% group_by(YOB) %>% summarize(mean_birthweight = mean(BWTG_C))
 ```
 
 Finally, we took a look at the distributions and means of birthweights across different years. Looking at the means, we found no reason to believe that the year of birth had an impact on the birth weight of the mother, and any significance found through an anova test, could probably be attributed to the large sample size. Thus, we chose not to include this variable as a predictor moving forward. 
 
-#Data cleaning and Tranformation
+<!-- #Data cleaning and Tranformation -->
 
-```{r}
+```{r,echo=FALSE}
 # Center Mother's age
 bdclean$MAGE_center = bdclean$MAGE - mean(bdclean$MAGE)
 
@@ -265,9 +312,17 @@ bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
 
 #Linear Regression Model 
 
-By the end of our exploratory data analysis, we determined that we wanted to work with all of the variables except for year of birth, and we had transformed a few of the numerical variables to categorical variables. Our first simple linear model yielded a model with an R^2 around .4993 with and R^2 adjusted of .4992. Here, we kept the cigarettes smoked in separate buckets. We also tried a simple model with cigarettes smoked as a binary variable, which yielded a similar R^2. 
+By the end of our exploratory data analysis, we determined that we wanted to work with all of the variables except for year of birth, and we had transformed a few of the numerical variables to categorical variables. 
 
-```{r}
+1st model: BWTG_C ~ male + CORES + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C_center + PLUR_new + MAGE_center + MRACER + PARITY_new
+
+Our first simple linear model yielded a model with an R^2 around .4993 with and R^2 adjusted of .4992. Here, we kept the cigarettes smoked in separate buckets.
+
+2nd model: BWTG_C ~ male + CORES + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C_center + PLUR_new + MAGE_center + MRACER + PARITY_new
+
+We also tried a simple model with cigarettes smoked as a binary variable, which yielded a similar R^2. 
+
+```{r, echo=FALSE, results="hide"}
 #Simple Model with Multiple Categories for Different Amounts of Smoking
 Simple_Model_1 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C_center + PLUR_new + MAGE_center + MRACER + PARITY_new, data = bdclean) 
 
@@ -281,7 +336,7 @@ summary(Simple_Model_2)
 
 #Trying More Interesting Models
 
-```{r}
+```{r, echo=FALSE, results="hide"}
 #Let's try squaring gestation since this variable seemed to have a curve in our EDA. 
 
 bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
@@ -291,13 +346,17 @@ Simple_Model_3 <- lm(BWTG_C ~ male + as.factor(CORES) + CIGPN_dichotic + CIGFN_d
 summary(Simple_Model_3)
 ```
 
+3rd model: BWTG_C ~ male + CORES + CIGPN_dichotic + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C_center + GEST_C_center_sq + PLUR_new + MAGE_center + MRACER + PARITY_new
+
 In this third model,we achieved an R^2 around 0.4994. Based on this model, we also saw that the variable CIGPN_dichotic was not significant. 
 
 #Let's Try Some Interaction Variables
 
+Model with Interaction Variables: BWTG_C ~ male + CORES + CIGFN_dichotic + CIGSN_dichotic + GEST_C_center + GEST_C_center_sq + PLUR_new + MAGE_center + MRACER + PARITY_new + PARITY_new*MAGE_center + PLUR_new*MAGE_center + CIGFN_dichotic*MAGE_center + CIGLN_dichotic + CIGLN_dichotic*MAGE_center + CIGFN_dichotic*MRACER + CIGSN_dichotic*MRACER
+
 Here, we added interaction variables between age and cigarette smoking, age and plurality, age and parity and cigarette smoking and race. Using backward selection based on the P-Value criteria and systematically removing variables who have the highest p-value in each iteration, we end up with the model below, which has an R^2 of 0.4999 and and R^2 adjusted of 0.4998. We used this type of model selection to arrive at a model with high predictability.
 
-```{r}
+```{r, echo=FALSE, results="hide"}
 Interaction_Model <- lm(BWTG_C ~ male + as.factor(CORES) + CIGFN_dichotic + CIGSN_dichotic + CIGLN_dichotic + GEST_C_center + GEST_C_center_sq + PLUR_new + MAGE_center + MRACER + PARITY_new + PARITY_new*MAGE_center + PLUR_new*MAGE_center + CIGFN_dichotic*MAGE_center + CIGSN_dichotic*MAGE_center + CIGLN_dichotic*MAGE_center + CIGFN_dichotic*MRACER + CIGSN_dichotic*MRACER + CIGLN_dichotic*MRACER, data = bdclean)
 
 #Backward Selection based on P-value, order of deletion:
@@ -314,7 +373,7 @@ summary(Interaction_Model_Final)
 Interpretations of the Model:
 
 
-#Impact Of Eliminating Maternal Smoking on Birth Weight in the Population
+<!--#Impact Of Eliminating Maternal Smoking on Birth Weight in the Population-->
 
 ```{r}
 
