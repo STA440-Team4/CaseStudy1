@@ -268,16 +268,15 @@ Taking a look at the relationship of the gender of the child v. the birthweight,
 summary(aov(BWTG_C ~ as.factor(MRACER), data = bdclean))
 ```
 
-It seems like the average birthweight is consistent throughout all the categories of mother's race, except that African mothers on average give birth to slightly lighter babies than mothers of other races. Because of these observations we decided to do an ANOVA test (and it appears from the results that at least one mean is significantly different from the others, which suggests there could be a relationship between birthweight and the race of mother). It will make sense to figure out which race deviates most from others in this aspect(#TODO). Currently we decided to keep race of mother as categorical predictor of birthweight.
+It appears that the average birthweight is consistent throughout all the categories of mother's race, except that African mothers on average give birth to lighter babies than mothers of other races. Because of these observations we decided to do an ANOVA test and result suggests that at least one mean is significantly different from the others, thus there could be a relationship between birthweight and the race of mother. It will be interesting to figure out which race deviates most from others in this aspect. Currently we decided to keep race of mother as categorical predictor of birthweight. Alternatively we may also group by ethnicity to reduce the number of categories in this predictor.
 
 ##Hispanic origin of mother vs birthweight
 ```{r,echo=FALSE,results="hide"}
 #boxplot(BWTG~MHISP, col="green",ylab="Birthweight (grams)", xlab="Hispanic Origin of Mother")
-
 summary(aov(BWTG_C ~ as.factor(MHISP), data = bdclean))
 ```
 
-Similarly, average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will make sense to figure out which category deviates most from others (#TODO). We decided to use hispanic origin of mother as a categorical variable in our model. 
+Similarly, average birthweight appears to be consistent across different categories of the mother's hispanic origin. An ANOVA test again suggests that there is at least one mean that is significantly different from the others, which means there could be some relationship with between birthweight and the type of hispanic origin of the mother. Again, it will be interesting to figure out which category deviates most from others. We decided to use hispanic origin of mother as a categorical variable in our model. In the mean time, we also acknowledge the number of non-hispanic mothers is much higher than that of hispanic origin. Depending on the model fit, we are open to an alternative -- dichotomize this predictor into hispanic and non-hispanic origins. 
 
 <!--#Total Pregnancies (Including This One) and Plurality-->
 
@@ -312,7 +311,7 @@ bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
 
 #Linear Regression Model 
 
-By the end of our exploratory data analysis, we determined that we wanted to work with all of the variables except for year of birth, and we had transformed a few of the numerical variables to categorical variables. 
+By the end of our exploratory data analysis, we determined that we wanted to work with all of the variables except for year of birth, and we had transformed a few of the numerical variables to categorical variables. Below we present our process for model selection and validataion.
 
 1st model: BWTG_C ~ male + CORES + CIGPN_bucket + CIGFN_bucket + CIGSN_bucket + CIGLN_bucket + GEST_C_center + PLUR_new + MAGE_center + MRACER + PARITY_new
 
