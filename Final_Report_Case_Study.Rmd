@@ -1,0 +1,94 @@
+---
+title: "Final_Report_Case_Study"
+author: "Ekim Buyuk"
+date: "9/10/2018"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+#Read in birth data
+o_data <- read.csv("Yr1116Birth.csv", 
+                   na.strings=c("99", "9999"))
+o_data$SEX[o_data$SEX == 9] = NA
+#Using SEX=1 male, 2 female; create new variable "male". male=1 means male, 0 means female
+o_data$male=2-o_data$SEX #binary gender for interpretation
+
+birth_data <- na.omit(o_data)
+
+birth_data$GEST_C=birth_data$GEST
+birth_data$BWTG_C=birth_data$BWTG
+birth_data$GEST_C[birth_data$GEST_C>50]=NA
+birth_data$GEST_C[birth_data$GEST_C<20]=NA
+birth_data$BWTG_C[birth_data$BWTG_C<500]=NA
+bdclean=na.omit(birth_data)
+
+attach(bdclean)
+
+#Cigarette Smoking Dichotic and Not Dichotic Variable Transformation
+
+bdclean$CIGPN_dichotic[bdclean$CIGPN == 0] = 0
+bdclean$CIGPN_dichotic[bdclean$CIGPN > 0] = 1
+
+bdclean$CIGPN_bucket[bdclean$CIGPN == 0] = "0"
+bdclean$CIGPN_bucket[bdclean$CIGPN >0 &bdclean$CIGPN <=20 ]="1-20"
+bdclean$CIGPN_bucket[bdclean$CIGPN >20 &bdclean$CIGPN <=40 ]="20-40 "
+bdclean$CIGPN_bucket[bdclean$CIGPN >40 &bdclean$CIGPN <=60 ]="40-60"
+bdclean$CIGPN_bucket[bdclean$CIGPN >60 &bdclean$CIGPN <=80 ]="60-80"
+bdclean$CIGPN_bucket[bdclean$CIGPN >80 &bdclean$CIGPN <=98 ]="80-98"
+
+bdclean$CIGFN_dichotic[bdclean$CIGFN == 0] = 0
+bdclean$CIGFN_dichotic[bdclean$CIGFN > 0] = 1
+
+bdclean$CIGFN_bucket[bdclean$CIGFN == 0] = "0"
+bdclean$CIGFN_bucket[bdclean$CIGFN >0 &bdclean$CIGFN <=20 ]="1-20"
+bdclean$CIGFN_bucket[bdclean$CIGFN >20 &bdclean$CIGFN <=40 ]="20-40"
+bdclean$CIGFN_bucket[bdclean$CIGFN >40 &bdclean$CIGFN <=60 ]="40-60"
+bdclean$CIGFN_bucket[bdclean$CIGFN >60 &bdclean$CIGFN <=80 ]="60-80"
+bdclean$CIGFN_bucket[bdclean$CIGFN >80 &bdclean$CIGFN <=98 ]="80-98"
+
+bdclean$CIGSN_dichotic[bdclean$CIGSN == 0] = 0
+bdclean$CIGSN_dichotic[bdclean$CIGSN > 0] = 1
+
+bdclean$CIGSN_bucket[bdclean$CIGSN == 0] = "0"
+bdclean$CIGSN_bucket[bdclean$CIGSN >0 &bdclean$CIGSN <=20 ]="1-20"
+bdclean$CIGSN_bucket[bdclean$CIGSN >20 &bdclean$CIGSN <=40 ]="20-40"
+bdclean$CIGSN_bucket[bdclean$CIGSN >40 &bdclean$CIGSN <=60 ]="40-60"
+bdclean$CIGSN_bucket[bdclean$CIGSN >60 &bdclean$CIGSN <=80 ]="60-80"
+bdclean$CIGSN_bucket[bdclean$CIGSN >80 &bdclean$CIGSN <=98 ]="80-98"
+
+bdclean$CIGLN_dichotic[bdclean$CIGLN == 0] = 0
+bdclean$CIGLN_dichotic[bdclean$CIGLN > 0] = 1
+
+bdclean$CIGLN_bucket[bdclean$CIGLN == 0] = "0"
+bdclean$CIGLN_bucket[bdclean$CIGLN >0 &bdclean$CIGLN <=20 ]="1-20"
+bdclean$CIGLN_bucket[bdclean$CIGLN >20 &bdclean$CIGLN <=40 ]="20-40"
+bdclean$CIGLN_bucket[bdclean$CIGLN >40 &bdclean$CIGLN <=60 ]="40-60"
+bdclean$CIGLN_bucket[bdclean$CIGLN >60 &bdclean$CIGLN <=80 ]="60-80"
+bdclean$CIGLN_bucket[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
+
+#Gender of Child
+males = subset(bdclean, male==1)
+females = subset(bdclean, male==0)
+
+#Parity
+bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
+bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
+
+#Plurality
+bdclean$PLUR_new[bdclean$PLUR == 1] = "singleton"
+bdclean$PLUR_new[bdclean$PLUR >1]=">1 children"
+
+# Center Mother's age
+bdclean$MAGE_center = bdclean$MAGE - mean(bdclean$MAGE)
+
+# Center Gestation
+bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
+
+#Let's try squaring gestation since this variable seemed to have a curve in our EDA. 
+bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
+```
+
+```{r_ekim}
+
+```
+
