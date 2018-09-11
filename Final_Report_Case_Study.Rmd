@@ -124,7 +124,7 @@ Does this mean smoking worked?
 
 ```{r}
 
-model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + MRACER + MAGE + MHISP, data = bdclean, family = binomial)
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP, data = bdclean, family = binomial)
 summary(model1)
 
 ps <- predict(model1, type="response")
@@ -148,11 +148,30 @@ any(is.na(smokingps))
 smokingps = ps[smokingrows]
 nonsmokingps = ps[nonsmokingrows]
 
+par(mfrow=c(1,2))
 hist(smokingps)
-summary(smokingps)
 hist(nonsmokingps)
+
+summary(smokingps)
 summary(nonsmokingps)
 ```
+```{r}
 
+overlap_ind <- which(ps < max(smokingps) & ps > min(smokingps))
+ps_overlap = ps[overlap_ind]
+
+bdclean_overlap = bdclean[overlap_ind,]
+
+blocks = cut(ps_overlap, quantile(ps_overlap, probs=seq(0,1,by=.1)), labels=c(1:10), include.lowest=TRUE)
+
+t.test(bdclean_overlap$MAGE[which(blocks==1)]~bdclean_overlap$smoking[which(blocks==1)])
+t.test(bdclean_overlap$MAGE[which(blocks==2)]~bdclean_overlap$smoking[which(blocks==2)])
+t.test(bdclean_overlap$MAGE[which(blocks==3)]~bdclean_overlap$smoking[which(blocks==3)])
+t.test(bdclean_overlap$MAGE[which(blocks==4)]~bdclean_overlap$smoking[which(blocks==4)])
+t.test(bdclean_overlap$MAGE[which(blocks==5)]~bdclean_overlap$smoking[which(blocks==5)])
+
+
+
+```
 
 
