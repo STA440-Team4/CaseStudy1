@@ -86,9 +86,73 @@ bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
 
 #Let's try squaring gestation since this variable seemed to have a curve in our EDA. 
 bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
+
+# regroup race of mother
+bdclean$MRACER_new[bdclean$MRACER == 4 || bdclean$MRACER== 5 || bdclean$MRACER==6 ||bdclean$MRACER==7 ||bdclean$MRACER==8] = "Asians and Pacific Islanders"
+bdclean$MRACER_new[bdclean$MRACER == 1] = "White"
+bdclean$MRACER_new[bdclean$MRACER == 2] = "Black or African American"
+bdclean$MRACER_new[bdclean$MRACER == 0|| bdclean$MRACER== 3 ] = "others"
+
+# regroup Hispanic origin
+bdclean$MHISP_new[bdclean$MHISP == "C" || bdclean$MHISP== "M" || bdclean$MHISP== "O" ||bdclean$MHISP=="P" ||bdclean$MHISP=="S"] = "Hispanic"
+bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
+bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
 ```
 
-```{r_ekim}
+#What is mean birthweight of smokers/non smokers?
+
+
+#What leads people to smoke? (Propensity Score Analysis)
+
+
+#Propensity score matching
+#Match observations with similar propensity scores and then see difference in birthweight between people with
+#similar propensity scores
+
+
+
+```{r}
+bdclean$smoking[bdclean$CIGPN_dichotic!=0 | bdclean$CIGFN_dichotic != 0 | bdclean$CIGSN_dichotic != 0 | bdclean$CIGLN_dichotic != 0] = 1
+
+bdclean$smoking[is.na(bdclean$smoking)] = 0
+
+wilcox.test(bdclean$BWTG_C ~ bdclean$smoking)
 
 ```
+
+Does this mean smoking worked?
+
+```{r}
+
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + MRACER + MAGE + MHISP, data = bdclean, family = binomial)
+summary(model1)
+
+ps <- predict(model1, type="response")
+
+
+
+
+
+
+
+
+# which(bdclean, bdclean$smoking == 0)
+
+hist(ps)
+
+smokingrows = which(bdclean$smoking == 1)
+nonsmokingrows = which(bdclean$smoking == 0)
+
+any(is.na(smokingps))
+
+smokingps = ps[smokingrows]
+nonsmokingps = ps[nonsmokingrows]
+
+hist(smokingps)
+summary(smokingps)
+hist(nonsmokingps)
+summary(nonsmokingps)
+```
+
+
 
