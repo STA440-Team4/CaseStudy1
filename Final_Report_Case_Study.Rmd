@@ -88,7 +88,28 @@ bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
 bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
 ```
 
-```{r_ekim}
+Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization). 
 
+```{r_ekim}
+lalonde$re78[lalonde$smokers==1]
+
+wilcox.test(lalonde$re78~lalonde$treat)
 ```
+At .05 significance level, we conclude that the birth weight data of smoking and nonsmoking mothers in this dataset are nonidentical populations. However, we cannot trust that this result truly means that smoking is directly related to birth weight because it is possible that mothers who smoke actually differ from mothers who do not smoke in a variety of factors. In the next step, we will try to find potential confounding variables.
+
+In this next step, we used logistic regression and regressed smoking on the following variables that we thought might influence smoking habits: county, gestation, parity, plurality, race, age and hispanic origin. Running this regression, we found that all of the variables, other than a couple of levels within the CORES variable, were significant. 
+
+Next, we predicted the model's propensity scores, and checked the overlap of the propensity scores between the groups. Both the smoking and non-smoking groups were right-skewed distributions with the median and inter-quartile range of the nonsmokers concentrated around slightly smaller scores (median of 0.10 v. 0.21 for smokers). After removing observations that did not overlap (we did not have very many), we then assessed the balance of the covariates based on the scores. 
+
+All of the p-values were greater than 0.05 so we lived happily ever after. 
+
+Questions: 
+What do we submit for our final report?
+How do we deal with CORES if at all?
+Overlap- can we do quartiles or do we have to do min and max?
+What does the p-value of the t-test/fisher tests signify?
+What do you do when the p-value of a certain level is less than 0.05?
+Is the goal to get p-values to be greater than 0.05? What if just not balanced? How do we improve the model/think of interaction terms to include in model?
+
+
 
