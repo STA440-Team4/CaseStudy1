@@ -164,6 +164,7 @@ What do we submit for our final report?
 How do we deal with CORES if at all?
  - maybe group by location on a map??
  - significant -> maybe by # of observations? no statistical reason to actually leave them out.
+ - forest plot
  
 Overlap- can we do quartiles or do we have to do min and max?
 - ideally do min to max, need more normal distribution, will make sense. 
@@ -199,4 +200,23 @@ auc(bdclean$smoking, predict_set)
 
 gives number - area under the curve
 Compare multiple models using this. Try higher order terms and compare. 
+
+```{r_Ekim playing around with model}
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + GEST_C^2 + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+summary(model1)
+
+ps <- predict(model1, type="response")
+predict_set <- rbinom(length(ps),1,prob = ps)
+
+auc(bdclean$smoking, predict_set)
+roc_curve <- roc(bdclean$smoking, predict_set)
+plot.roc(roc_curve)
+```
+all linear -> 0.5483
+w/ gest squared-> 0.5487
+w/ gest squared and cubed -> 0.5492
+w/ gest squared and interaction variable MAGE*MRACER> 0.5511
+w/ interaction variable CORES * MHISP ->
+w/ interaction variables CORES * MAGE ->
+w/ interaction variable 
 
