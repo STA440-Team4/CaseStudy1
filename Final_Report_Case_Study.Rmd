@@ -5,6 +5,11 @@ date: "9/10/2018"
 output: pdf_document
 ---
 
+```{r, include=FALSE}
+library(dplyr)
+library(pROC)
+```
+
 ```{r, echo=FALSE}
 #Read in birth data
 o_data <- read.csv("Yr1116Birth.csv", 
@@ -86,9 +91,153 @@ bdclean$GEST_C_center = bdclean$GEST_C - mean(bdclean$GEST_C)
 
 #Let's try squaring gestation since this variable seemed to have a curve in our EDA. 
 bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
+
+# regroup race of mother
+bdclean$MRACER_new[bdclean$MRACER %in% c(4,5,6,7,8)] = "Asians and Pacific Islanders"
+bdclean$MRACER_new[bdclean$MRACER == 1] = "White"
+bdclean$MRACER_new[bdclean$MRACER == 2] = "Black or African American"
+bdclean$MRACER_new[bdclean$MRACER %in% c(0,3) ] = "others"
+
+# regroup Hispanic origin
+bdclean$MHISP_new[bdclean$MHISP %in% c("C", "M", "O", "P", "S")] = "Hispanic"
+bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
+bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
 ```
 
-```{r_ekim}
+Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization).
 
+```{r}
+bdclean$smoking[bdclean$CIGPN_dichotic!=0 | bdclean$CIGFN_dichotic != 0 | bdclean$CIGSN_dichotic != 0 | bdclean$CIGLN_dichotic != 0] = 1
+
+bdclean$smoking[is.na(bdclean$smoking)] = 0
+
+bdclean %>% group_by(smoking) %>% summarise(mean_birth = mean(BWTG_C))
+
+wilcox.test(bdclean$BWTG_C ~ bdclean$smoking)
 ```
+
+At .05 significance level, we conclude that the birth weight data of smoking and nonsmoking mothers in this dataset are nonidentical populations. However, we cannot trust that this result truly means that smoking is directly related to birth weight because it is possible that mothers who smoke actually differ from mothers who do not smoke in a variety of factors. In the next step, we will try to find potential confounding variables.
+
+In this next step, we used logistic regression and regressed smoking on the following variables that we thought might influence smoking habits: county, gestation, parity, plurality, race, age and hispanic origin. Running this regression, we found that all of the variables, other than a couple of levels within the CORES variable, were significant. 
+
+Next, we predicted the model's propensity scores, and checked the overlap of the propensity scores between the groups. Both the smoking and non-smoking groups were right-skewed distributions with the median and inter-quartile range of the nonsmokers concentrated around slightly smaller scores (median of 0.10 v. 0.21 for smokers). After removing observations that did not overlap (we did not have very many), we then assessed the balance of the covariates based on the scores. 
+
+All of the p-values were greater than 0.05 so we lived happily ever after. 
+
+```{r}
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP, data = bdclean, family = binomial)
+summary(model1)
+
+ps <- predict(model1, type="response") #change to binary outomce 
+predict_set <- rbinom(length(ps),1,prob = ps)
+hist(ps)
+
+smokingrows = which(bdclean$smoking == 1)
+nonsmokingrows = which(bdclean$smoking == 0)
+
+smokingps = ps[smokingrows]
+nonsmokingps = ps[nonsmokingrows]
+
+par(mfrow=c(1,2))
+hist(smokingps)
+hist(nonsmokingps)
+
+summary(smokingps)
+summary(nonsmokingps)
+```
+
+
+```{r}
+overlap_ind <- which(ps < max(smokingps) & ps > min(smokingps))
+ps_overlap = ps[overlap_ind]
+
+bdclean_overlap = bdclean[overlap_ind,]
+
+blocks = cut(ps_overlap, quantile(ps_overlap, probs=seq(0,1,by=.1)), labels=c(1:10), include.lowest=TRUE)
+
+t.test(bdclean_overlap$MAGE[which(blocks==1)]~bdclean_overlap$smoking[which(blocks==1)])
+t.test(bdclean_overlap$MAGE[which(blocks==2)]~bdclean_overlap$smoking[which(blocks==2)])
+t.test(bdclean_overlap$MAGE[which(blocks==3)]~bdclean_overlap$smoking[which(blocks==3)])
+t.test(bdclean_overlap$MAGE[which(blocks==4)]~bdclean_overlap$smoking[which(blocks==4)])
+t.test(bdclean_overlap$MAGE[which(blocks==5)]~bdclean_overlap$smoking[which(blocks==5)])
+```
+
+Questions: 
+What do we submit for our final report?
+ - New EDA to include in report are boxplots + Model from final report (should tangentially answer from Report 1)
+
+How do we deal with CORES if at all?
+ - maybe group by location on a map??
+ - significant -> maybe by # of observations? no statistical reason to actually leave them out.
+ - forest plot
+ 
+Overlap- can we do quartiles or do we have to do min and max?
+- ideally do min to max, need more normal distribution, will make sense. 
+- want our propensity score model to give more normally distributed 
+- Overlap region-> no principled cutoff region. get rid of everything outside overlap region. <5% hopefully. 
+
+What does the p-value of the t-test/fisher tests signify?
+- is the distribution of y variable same for the 2 (non-smoking v. smoking)
+- ideally we want a p-value that is not significant which tells you that the distribution is not different between the two so that age distributions same for both
+- if all p-values >0.05 (same between 2 groups) then whatever we see should be due to actual x and y, not confounding variables.
+
+What do you do when the p-value of a certain level is less than 0.05?
+- already indicaiton due to model not predicting well -> so do better
+- if propensity score variable shud be good then maybe actual confounding variable -> dont worry if on ends, because a little bit like outliers (1 in 5 is fine) one very likely and other very unlikely. because so different already... but if all in the middle fine, then it is fine.
+
+Is the goal to get p-values to be greater than 0.05? What if just not balanced? How do we improve the model/think of interaction terms to include in model?
+
+if we think it is very good (VERY IMPORTANT TO ADDRESS THIS.
+based on: what goes into propensity score model... how do we decide... 
+- goal is prediction not interpretability (so can have weird stuff!) 
+- can put spines or polynomials or interaction variables 
+- have a good range that makes sense
+quadratic x and x^2 
+polynomial x, x^2 and x^3
+google what they look like and then apply that
+- EDA can confirm that 
+)
+
+#After Fitting Propensity Model, can test how good the new model is:
+
+library(pROC)
+auc(bdclean$smoking, predict_set)
+
+gives number - area under the curve
+Compare multiple models using this. Try higher order terms and compare. 
+
+```{r_Ekim playing around with model}
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + GEST_C^2 + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+summary(model1)
+
+ps <- predict(model1, type="response")
+predict_set <- rbinom(length(ps),1,prob = ps)
+
+auc(bdclean$smoking, predict_set)
+roc_curve <- roc(bdclean$smoking, predict_set)
+plot.roc(roc_curve)
+```
+all linear -> 0.5483
+w/ gest squared-> 0.5487
+w/ gest squared and cubed -> 0.5492
+w/ gest squared and interaction variable MAGE*MRACER> 0.5511
+w/ interaction variable CORES * MHISP ->
+w/ interaction variables CORES * MAGE ->
+w/ interaction variable 
+
+```{r}
+# Bihan playing around
+model2 = glm(smoking ~ GEST_C + GEST_C^2 + MAGE_center + PARITY + PLUR + as.factor(CORES) + as.factor(MRACER_new) + as.factor(MHISP_new), data = bdclean, family = binomial)
+summary(model2)
+
+ps <- predict(model2, type="response")
+predict_set <- rbinom(length(ps),1,prob = ps)
+
+auc(bdclean$smoking, predict_set)
+roc_curve <- roc(bdclean$smoking, predict_set)
+plot.roc(roc_curve)
+```
+
+smoking ~ GEST_C + GEST_C^2 + MAGE_center + as.factor(CORES) + as.factor(PARITY_new) + as.factor(PLUR_new) + as.factor(MRACER_new) + as.factor(MHISP_new) -> 0.5417 :(
+
 
