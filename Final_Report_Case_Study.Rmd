@@ -6,11 +6,13 @@ output: pdf_document
 ---
 
 ```{r, include=FALSE}
+#Libraries
 library(dplyr)
 library(pROC)
 ```
 
 ```{r, echo=FALSE}
+#Cleaning
 #Read in birth data
 o_data <- read.csv("Yr1116Birth.csv", 
                    na.strings=c("99", "9999"))
@@ -104,13 +106,18 @@ bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
 bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
 ```
 
-Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization).
-
-```{r}
+```{r, echo=FALSE}
+##Making Smoking a Binary variable
 bdclean$smoking[bdclean$CIGPN_dichotic!=0 | bdclean$CIGFN_dichotic != 0 | bdclean$CIGSN_dichotic != 0 | bdclean$CIGLN_dichotic != 0] = 1
 
 bdclean$smoking[is.na(bdclean$smoking)] = 0
+```
 
+##Part I: Exploratory Data Analysis
+
+
+
+```{r, echo=FALSE}
 bdclean %>% group_by(smoking) %>% summarise(mean_birth = mean(BWTG_C))
 
 wilcox.test(bdclean$BWTG_C ~ bdclean$smoking)
