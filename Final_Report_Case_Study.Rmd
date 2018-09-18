@@ -113,7 +113,7 @@ bdclean$MRACER_new[bdclean$MRACER %in% c(0,3) ] = "others"
 # regroup Hispanic origin
 bdclean$MHISP_new[bdclean$MHISP %in% c("C", "M", "O", "P", "S")] = "Hispanic"
 bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
-bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
+
 ```
 
 
@@ -140,6 +140,18 @@ bdclean %>% group_by(smoking) %>% summarise(mean_birth = mean(BWTG_C))
 wilcox.test(bdclean$BWTG_C ~ bdclean$smoking)
 ```
 
+Does this mean smoking worked?
+
+```{r}
+
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP, data = bdclean, family = binomial)
+summary(model1)
+
+ps <- predict(model1, type="response")
+
+
+# which(bdclean, bdclean$smoking == 0)
+```
 At .05 significance level, we conclude that the birth weight data of smoking and nonsmoking mothers in this dataset are nonidentical populations. However, we cannot trust that this result truly means that smoking is directly related to birth weight because it is possible that mothers who smoke actually differ from mothers who do not smoke in a variety of factors. In the next step, we will try to find potential confounding variables.
 
 In this next step, we used logistic regression and regressed smoking on the following variables that we thought might influence smoking habits: county, gestation, parity, plurality, race, age and hispanic origin. Running this regression, we found that all of the variables, other than a couple of levels within the CORES variable, were significant. 
@@ -260,8 +272,14 @@ auc(bdclean$smoking, predict_set)
 gives number - area under the curve
 Compare multiple models using this. Try higher order terms and compare. 
 
+
+```{r _Ekim playing around with model}
+model1 = glm(smoking ~ as.factor(CORES) + GEST_C + GEST_C^2 + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+```
+
 ```{r_Ekim playing around with model}
 model1 = glm(smoking ~ as.factor(CORES) + as.factor(MRACER) + MAGE + MAGE^2 + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+
 summary(model1)
 
 ps <- predict(model1, type="response")
@@ -276,7 +294,7 @@ w/ gest squared-> 0.5487
 w/ gest squared and cubed -> 0.5492
 w/ gest squared and interaction variable MAGE*MRACER -> 0.5511
 w/ interaction variable CORES * MHISP ->
-w/ interaction variables CORES * MAGE ->
+w/ interaction variables CORES * MAGE -> 0.5496
 w/ interaction variable 
 
 Start of Paper:
@@ -311,5 +329,107 @@ auc(bdclean$smoking, predict_set)
 roc_curve <- roc(bdclean$smoking, predict_set)
 plot.roc(roc_curve)
 ```
+
+```{r Steven}
+
+# model3 = glm(smoking ~ as.factor(CORES) + GEST_C + GEST_C^2 + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(CORES), data = bdclean, family = binomial)
+# summary(model3)
+# 
+# ps <- predict(model3, type="response")
+# predict_set <- rbinom(length(ps),1,prob = ps)
+# 
+# auc(bdclean$smoking, predict_set)
+# roc_curve <- roc(bdclean$smoking, predict_set)
+# plot.roc(roc_curve)
+# 
+# 
+# 
+# 
+# 
+# 
+# model4 = glm(smoking ~ as.factor(CORES) + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+# summary(model4)
+# 
+# ps <- predict(model4, type="response")
+# predict_set <- rbinom(length(ps),1,prob = ps)
+# 
+# auc(bdclean$smoking, predict_set)
+# roc_curve <- roc(bdclean$smoking, predict_set)
+# plot.roc(roc_curve)
+# 
+# 
+# 
+# 
+# model5 = glm(smoking ~ as.factor(CORES) + as.factor(MRACER) + MAGE + MAGE^2 + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+# summary(model5)
+# 
+# ps <- predict(model5, type="response")
+# predict_set <- rbinom(length(ps),1,prob = ps)
+# 
+# auc(bdclean$smoking, predict_set)
+# roc_curve <- roc(bdclean$smoking, predict_set)
+# plot.roc(roc_curve)
+# 
+# 
+# 
+# model6 = glm(smoking ~ as.factor(CORES) + MAGE + as.factor(MRACER) + as.factor(MHISP) + as.factor(MRACER)*MAGE + as.factor(MHISP)*as.factor(MRACER), data = bdclean, family = binomial)
+# summary(model6)
+# 
+# ps <- predict(model6, type="response")
+# 
+# hist(ps)
+# 
+# smokingrows = which(bdclean$smoking == 1)
+# nonsmokingrows = which(bdclean$smoking == 0)
+# 
+# smokingps = ps[smokingrows]
+# nonsmokingps = ps[nonsmokingrows]
+# 
+# par(mfrow=c(1,2))
+# hist(smokingps)
+# hist(nonsmokingps)
+
+
+model7 = glm(smoking ~ as.factor(CORES) + MAGE + as.factor(MRACER) + as.factor(MHISP_new) + as.factor(MRACER)*MAGE + as.factor(MHISP_new)*as.factor(MRACER), data = bdclean, family = binomial)
+summary(model7)
+
+ps <- predict(model7, type="response")
+predict_set <- rbinom(length(ps),1,prob = ps)
+
+auc(bdclean$smoking, predict_set)
+roc_curve <- roc(bdclean$smoking, predict_set)
+plot.roc(roc_curve)
+
+overlap_ind <- which(ps < max(smokingps) & ps > min(smokingps))
+ps_overlap = ps[overlap_ind]
+
+bdclean_overlap = bdclean[overlap_ind,]
+
+blocks = cut(ps_overlap, quantile(ps_overlap, probs=seq(0,1,by=.2)), labels=c(1:5), include.lowest=TRUE)
+
+t.test(bdclean_overlap$MAGE[which(blocks==1)]~bdclean_overlap$smoking[which(blocks==1)])
+t.test(bdclean_overlap$MAGE[which(blocks==2)]~bdclean_overlap$smoking[which(blocks==2)])
+t.test(bdclean_overlap$MAGE[which(blocks==3)]~bdclean_overlap$smoking[which(blocks==3)])
+t.test(bdclean_overlap$MAGE[which(blocks==4)]~bdclean_overlap$smoking[which(blocks==4)])
+t.test(bdclean_overlap$MAGE[which(blocks==5)]~bdclean_overlap$smoking[which(blocks==5)])
+
+fisher.test(bdclean_overlap$MRACER[which(blocks==1)],bdclean_overlap$smoking[which(blocks==1)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MRACER[which(blocks==2)],bdclean_overlap$smoking[which(blocks==2)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MRACER[which(blocks==3)],bdclean_overlap$smoking[which(blocks==3)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MRACER[which(blocks==4)],bdclean_overlap$smoking[which(blocks==4)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MRACER[which(blocks==5)],bdclean_overlap$smoking[which(blocks==5)], simulate.p.value = T)
+
+fisher.test(bdclean_overlap$MHISP[which(blocks==1)],bdclean_overlap$smoking[which(blocks==1)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MHISP[which(blocks==2)],bdclean_overlap$smoking[which(blocks==2)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MHISP[which(blocks==3)],bdclean_overlap$smoking[which(blocks==3)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MHISP[which(blocks==4)],bdclean_overlap$smoking[which(blocks==4)], simulate.p.value = T)
+fisher.test(bdclean_overlap$MHISP[which(blocks==5)],bdclean_overlap$smoking[which(blocks==5)], simulate.p.value = T)
+
+
+
+
+
+```
+
 
 smoking ~ GEST_C + GEST_C^2 + MAGE_center + as.factor(CORES) + as.factor(PARITY_new) + as.factor(PLUR_new) + as.factor(MRACER_new) + as.factor(MHISP_new) -> 0.5417 :(
