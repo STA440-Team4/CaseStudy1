@@ -202,7 +202,7 @@ gives number - area under the curve
 Compare multiple models using this. Try higher order terms and compare. 
 
 ```{r_Ekim playing around with model}
-model1 = glm(smoking ~ as.factor(CORES) + GEST_C + GEST_C^2 + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+model1 = glm(smoking ~ as.factor(CORES) + as.factor(MRACER) + MAGE + MAGE^2 + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
 summary(model1)
 
 ps <- predict(model1, type="response")
@@ -215,8 +215,26 @@ plot.roc(roc_curve)
 all linear -> 0.5483
 w/ gest squared-> 0.5487
 w/ gest squared and cubed -> 0.5492
-w/ gest squared and interaction variable MAGE*MRACER> 0.5511
+w/ gest squared and interaction variable MAGE*MRACER -> 0.5511
 w/ interaction variable CORES * MHISP ->
 w/ interaction variables CORES * MAGE ->
 w/ interaction variable 
 
+Start of Paper:
+
+To begin answering this question, we first conducted a Wilcox Test to see whether smoking seemed to lead to different birth weights in babies. 
+
+[Insert test and results here]
+
+
+At .05 significance level, we could conclude from this test that the birth weight data of smoking and nonsmoking mothers in this dataset are nonidentical populations. However, we cannot trust that this result truly means that smoking is directly related to birth weight because it is possible that mothers who smoke actually differ from mothers who do not smoke in a variety of factors. In order to behin thinking about potential confounding factors, we started to do some EDA on the different variables we thought might be associated with smoking, specifically: the counties, age, race, hispanic origin, and ge
+
+```{r_Ekim_EDA}
+boxplot(GEST_C~smoking)
+
+```
+
+
+In this next step, we used logistic regression and regressed smoking on the following variables that we thought might influence smoking habits: county, gestation, parity, plurality, race, age and hispanic origin. Running this regression, we found that all of the variables, other than a couple of levels within the CORES variable, were significant. 
+
+Next, we predicted the model's propensity scores, and checked the overlap of the propensity scores between the groups. Both the smoking and non-smoking groups were right-skewed distributions with the median and inter-quartile range of the nonsmokers concentrated around slightly smaller scores (median of 0.10 v. 0.21 for smokers). After removing observations that did not overlap (we did not have very many), we then assessed the balance of the covariates based on the scores. 
