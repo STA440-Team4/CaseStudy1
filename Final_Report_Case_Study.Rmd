@@ -116,15 +116,15 @@ bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
 bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
 ```
 
-<<<<<<< HEAD
+
 Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization).
 
 
-```{r}
-=======
+
+
 ```{r, echo=FALSE}
 ##Making Smoking a Binary variable
->>>>>>> 846b8d9fae4e95e2fd21d346cf4a6ab9e5eafe54
+
 bdclean$smoking[bdclean$CIGPN_dichotic!=0 | bdclean$CIGFN_dichotic != 0 | bdclean$CIGSN_dichotic != 0 | bdclean$CIGLN_dichotic != 0] = 1
 
 bdclean$smoking[is.na(bdclean$smoking)] = 0
@@ -279,8 +279,6 @@ w/ interaction variable CORES * MHISP ->
 w/ interaction variables CORES * MAGE ->
 w/ interaction variable 
 
-<<<<<<< HEAD
-=======
 Start of Paper:
 
 To begin answering this question, we first conducted a Wilcox Test to see whether smoking seemed to lead to different birth weights in babies. 
@@ -299,7 +297,7 @@ boxplot(GEST_C~smoking)
 In this next step, we used logistic regression and regressed smoking on the following variables that we thought might influence smoking habits: county, gestation, parity, plurality, race, age and hispanic origin. Running this regression, we found that all of the variables, other than a couple of levels within the CORES variable, were significant. 
 
 Next, we predicted the model's propensity scores, and checked the overlap of the propensity scores between the groups. Both the smoking and non-smoking groups were right-skewed distributions with the median and inter-quartile range of the nonsmokers concentrated around slightly smaller scores (median of 0.10 v. 0.21 for smokers). After removing observations that did not overlap (we did not have very many), we then assessed the balance of the covariates based on the scores. 
->>>>>>> 846b8d9fae4e95e2fd21d346cf4a6ab9e5eafe54
+
 
 ```{r}
 # Bihan playing around
