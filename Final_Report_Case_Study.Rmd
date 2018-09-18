@@ -7,7 +7,16 @@ output: pdf_document
 
 ```{r, include=FALSE}
 library(dplyr)
+if (!require("pROC")) install.packages("pROC")
 library(pROC)
+library(knitr)
+# knowledge of the reshape package is from:
+# https://www.r-statistics.com/2012/01/aggregation-and-restructuring-data-from-r-in-action/
+library(reshape)
+# knowledge of the lemon package is from:
+# https://cran.r-project.org/web/packages/lemon/vignettes/lemon_print.html
+if (!require("lemon")) install.packages("lemon")
+library(lemon)
 ```
 
 ```{r, echo=FALSE}
@@ -15,6 +24,7 @@ library(pROC)
 o_data <- read.csv("Yr1116Birth.csv", 
                    na.strings=c("99", "9999"))
 o_data$SEX[o_data$SEX == 9] = NA
+o_data$MHISP[o_data$MHISP == "U"] = NA
 #Using SEX=1 male, 2 female; create new variable "male". male=1 means male, 0 means female
 o_data$male=2-o_data$SEX #binary gender for interpretation
 
@@ -106,6 +116,7 @@ bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
 
 Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization).
 
+
 ```{r}
 bdclean$smoking[bdclean$CIGPN_dichotic!=0 | bdclean$CIGFN_dichotic != 0 | bdclean$CIGSN_dichotic != 0 | bdclean$CIGLN_dichotic != 0] = 1
 
@@ -123,6 +134,36 @@ In this next step, we used logistic regression and regressed smoking on the foll
 Next, we predicted the model's propensity scores, and checked the overlap of the propensity scores between the groups. Both the smoking and non-smoking groups were right-skewed distributions with the median and inter-quartile range of the nonsmokers concentrated around slightly smaller scores (median of 0.10 v. 0.21 for smokers). After removing observations that did not overlap (we did not have very many), we then assessed the balance of the covariates based on the scores. 
 
 All of the p-values were greater than 0.05 so we lived happily ever after. 
+
+```{r, echo = FALSE}
+racesmokecount = bdclean %>%
+        group_by(MRACER_new, smoking) %>%
+        summarise(Freq = n()) %>%
+        cast(smoking~MRACER_new) %>%
+        select(-smoking)
+rownames(racesmokecount) = c("Non-smokers", "Smokers")
+racesmokecount$`Asians and Pacific Islanders` = racesmokecount$`Asians and Pacific Islanders`/sum(racesmokecount$`Asians and Pacific Islanders`)
+racesmokecount$`Black or African American` = racesmokecount$`Black or African American`/sum(racesmokecount$`Black or African American`)
+racesmokecount$others = racesmokecount$others/sum(racesmokecount$others)
+racesmokecount$White = racesmokecount$White/sum(racesmokecount$White)
+racesmokecount = round(racesmokecount, digits = 4)
+racesmokecount = racesmokecount[c(2, 4, 1, 3)]
+```
+```{r caption = "Smoking trends across different races"}
+head(racesmokecount)
+```
+
+```{r}
+hispsmokecount = bdclean %>%
+        group_by(MHISP_new, smoking) %>%
+        summarise(Freq = n()) %>%
+        cast(smoking~MHISP_new) %>%
+        select(-smoking)
+rownames(hispsmokecount) = c("Non-smokers", "Smokers")
+hispsmokecount$Hispanic = hispsmokecount$Hispanic/sum(hispsmokecount$Hispanic)
+hispsmokecount$`Non-hispanic` = hispsmokecount$`Non-hispanic`/sum(hispsmokecount$`Non-hispanic`)
+hispsmokecount
+```
 
 ```{r}
 model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP, data = bdclean, family = binomial)
@@ -224,6 +265,7 @@ w/ gest squared and interaction variable MAGE*MRACER> 0.5511
 w/ interaction variable CORES * MHISP ->
 w/ interaction variables CORES * MAGE ->
 w/ interaction variable 
+
 
 ```{r}
 # Bihan playing around
