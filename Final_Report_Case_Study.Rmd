@@ -6,6 +6,7 @@ output: pdf_document
 ---
 
 ```{r, include=FALSE}
+#Libraries
 library(dplyr)
 if (!require("pROC")) install.packages("pROC")
 library(pROC)
@@ -20,6 +21,7 @@ library(lemon)
 ```
 
 ```{r, echo=FALSE}
+#Cleaning
 #Read in birth data
 o_data <- read.csv("Yr1116Birth.csv", 
                    na.strings=c("99", "9999"))
@@ -114,14 +116,25 @@ bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
 bdclean$MHISP_new[bdclean$MHISP == "U" ] = "Unknown"
 ```
 
+<<<<<<< HEAD
 Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization).
 
 
 ```{r}
+=======
+```{r, echo=FALSE}
+##Making Smoking a Binary variable
+>>>>>>> 846b8d9fae4e95e2fd21d346cf4a6ab9e5eafe54
 bdclean$smoking[bdclean$CIGPN_dichotic!=0 | bdclean$CIGFN_dichotic != 0 | bdclean$CIGSN_dichotic != 0 | bdclean$CIGLN_dichotic != 0] = 1
 
 bdclean$smoking[is.na(bdclean$smoking)] = 0
+```
 
+##Part I: Exploratory Data Analysis
+
+
+
+```{r, echo=FALSE}
 bdclean %>% group_by(smoking) %>% summarise(mean_birth = mean(BWTG_C))
 
 wilcox.test(bdclean$BWTG_C ~ bdclean$smoking)
@@ -248,7 +261,7 @@ gives number - area under the curve
 Compare multiple models using this. Try higher order terms and compare. 
 
 ```{r_Ekim playing around with model}
-model1 = glm(smoking ~ as.factor(CORES) + GEST_C + GEST_C^2 + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
+model1 = glm(smoking ~ as.factor(CORES) + as.factor(MRACER) + MAGE + MAGE^2 + MHISP + MAGE*as.factor(MRACER), data = bdclean, family = binomial)
 summary(model1)
 
 ps <- predict(model1, type="response")
@@ -261,11 +274,32 @@ plot.roc(roc_curve)
 all linear -> 0.5483
 w/ gest squared-> 0.5487
 w/ gest squared and cubed -> 0.5492
-w/ gest squared and interaction variable MAGE*MRACER> 0.5511
+w/ gest squared and interaction variable MAGE*MRACER -> 0.5511
 w/ interaction variable CORES * MHISP ->
 w/ interaction variables CORES * MAGE ->
 w/ interaction variable 
 
+<<<<<<< HEAD
+=======
+Start of Paper:
+
+To begin answering this question, we first conducted a Wilcox Test to see whether smoking seemed to lead to different birth weights in babies. 
+
+[Insert test and results here]
+
+
+At .05 significance level, we could conclude from this test that the birth weight data of smoking and nonsmoking mothers in this dataset are nonidentical populations. However, we cannot trust that this result truly means that smoking is directly related to birth weight because it is possible that mothers who smoke actually differ from mothers who do not smoke in a variety of factors. In order to behin thinking about potential confounding factors, we started to do some EDA on the different variables we thought might be associated with smoking, specifically: the counties, age, race, hispanic origin, and ge
+
+```{r_Ekim_EDA}
+boxplot(GEST_C~smoking)
+
+```
+
+
+In this next step, we used logistic regression and regressed smoking on the following variables that we thought might influence smoking habits: county, gestation, parity, plurality, race, age and hispanic origin. Running this regression, we found that all of the variables, other than a couple of levels within the CORES variable, were significant. 
+
+Next, we predicted the model's propensity scores, and checked the overlap of the propensity scores between the groups. Both the smoking and non-smoking groups were right-skewed distributions with the median and inter-quartile range of the nonsmokers concentrated around slightly smaller scores (median of 0.10 v. 0.21 for smokers). After removing observations that did not overlap (we did not have very many), we then assessed the balance of the covariates based on the scores. 
+>>>>>>> 846b8d9fae4e95e2fd21d346cf4a6ab9e5eafe54
 
 ```{r}
 # Bihan playing around
@@ -281,5 +315,3 @@ plot.roc(roc_curve)
 ```
 
 smoking ~ GEST_C + GEST_C^2 + MAGE_center + as.factor(CORES) + as.factor(PARITY_new) + as.factor(PLUR_new) + as.factor(MRACER_new) + as.factor(MHISP_new) -> 0.5417 :(
-
-
