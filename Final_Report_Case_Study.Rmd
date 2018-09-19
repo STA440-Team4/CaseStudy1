@@ -18,6 +18,9 @@ library(reshape)
 # https://cran.r-project.org/web/packages/lemon/vignettes/lemon_print.html
 if (!require("lemon")) install.packages("lemon")
 library(lemon)
+# knowledge of MatchIt package is from:
+# https://sejdemyr.github.io/r-tutorials/statistics/tutorial8.html#executing-a-matching-algorithm
+library(MatchIt)
 ```
 
 ```{r, echo=FALSE}
@@ -167,6 +170,36 @@ head(racesmokecount)
 ```
 
 ```{r}
+raceunsortcount = bdclean %>%
+        group_by(MRACER, smoking) %>%
+        summarise(Freq = n()) %>%
+        cast(smoking~MRACER) %>%
+        select(-smoking)
+rownames(raceunsortcount) = c("Non-smokers", "Smokers")
+raceunsortcount
+propracecount = raceunsortcount
+for(i in 1:ncol(propracecount)) (
+        propracecount[,i] = propracecount[,i]/sum(propracecount[,i])
+)
+propracecount
+```
+
+```{r}
+hispansmokecount = bdclean %>%
+        group_by(MHISP, smoking) %>%
+        summarise(Freq = n()) %>%
+        cast(smoking~MHISP) %>%
+        select(-smoking)
+rownames(hispansmokecount) = c("Non-smokers", "Smokers")
+hispansmokecount
+for(i in 1:ncol(hispansmokecount)) (
+        hispansmokecount[,i] = hispansmokecount[,i]/sum(hispansmokecount[,i])
+)
+hispansmokecount
+```
+
+
+```{r}
 hispsmokecount = bdclean %>%
         group_by(MHISP_new, smoking) %>%
         summarise(Freq = n()) %>%
@@ -313,3 +346,14 @@ plot.roc(roc_curve)
 ```
 
 smoking ~ GEST_C + GEST_C^2 + MAGE_center + as.factor(CORES) + as.factor(PARITY_new) + as.factor(PLUR_new) + as.factor(MRACER_new) + as.factor(MHISP_new) -> 0.5417 :(
+
+```{r, cache = TRUE}
+# one-to-one matching
+
+# making sure there are no NAs!!
+bdclean <- na.omit(bdclean)
+
+# utilized matchit and match.data to get data frame with only matched by propensity scores
+mod_match <- matchit(smoking ~ GEST_C + GEST_C^2 + MAGE_center + PARITY + PLUR + as.factor(CORES) + as.factor(MRACER_new) + as.factor(MHISP_new), method = "nearest", data = bdclean)
+bdmatch <- match.data(mod_match)
+```
