@@ -18,6 +18,10 @@ library(reshape)
 # https://cran.r-project.org/web/packages/lemon/vignettes/lemon_print.html
 if (!require("lemon")) install.packages("lemon")
 library(lemon)
+if (!require("MatchIt")) install.packages("MatchIt")
+library(MatchIt)
+if (!require("Zelig")) install.packages("Zelig")
+library(Zelig)
 ```
 
 ```{r, echo=FALSE}
@@ -40,9 +44,10 @@ birth_data$BWTG_C[birth_data$BWTG_C<500]=NA
 bdclean=na.omit(birth_data)
 
 attach(bdclean)
+```
 
+```{r}
 #Cigarette Smoking Dichotic and Not Dichotic Variable Transformation
-
 bdclean$CIGPN_dichotic[bdclean$CIGPN == 0] = 0
 bdclean$CIGPN_dichotic[bdclean$CIGPN > 0] = 1
 
@@ -86,7 +91,9 @@ bdclean$CIGLN_bucket[bdclean$CIGLN >80 &bdclean$CIGLN <=98 ]="80-98"
 #Gender of Child
 males = subset(bdclean, male==1)
 females = subset(bdclean, male==0)
+```
 
+```{r}
 #Parity
 bdclean$PARITY_new[bdclean$PARITY == 1] = "first pregnancy"
 bdclean$PARITY_new[bdclean$PARITY > 1]= ">1 pregnancy"
@@ -108,19 +115,15 @@ bdclean$GEST_C_center_sq = (bdclean$GEST_C_center)^2
 bdclean$MRACER_new[bdclean$MRACER %in% c(4,5,6,7,8)] = "Asians and Pacific Islanders"
 bdclean$MRACER_new[bdclean$MRACER == 1] = "White"
 bdclean$MRACER_new[bdclean$MRACER == 2] = "Black or African American"
-bdclean$MRACER_new[bdclean$MRACER %in% c(0,3) ] = "others"
+bdclean$MRACER_new[bdclean$MRACER %in% c(0,3)] = "others"
 
 # regroup Hispanic origin
 bdclean$MHISP_new[bdclean$MHISP %in% c("C", "M", "O", "P", "S")] = "Hispanic"
 bdclean$MHISP_new[bdclean$MHISP == "N" ] = "Non-hispanic"
-
 ```
 
 
 Address the potential impact of eliminating smoking on birth weight in the population. Clearly describe your modeling approach and any assumptions required to produce estimates (including uncertainty characterization).
-
-
-
 
 ```{r, echo=FALSE}
 ##Making Smoking a Binary variable
@@ -191,10 +194,10 @@ hispsmokecount
 ```
 
 ```{r}
-model1 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP, data = bdclean, family = binomial)
-summary(model1)
+model2 = glm(smoking ~ as.factor(CORES) + GEST_C + PARITY + PLUR + as.factor(MRACER) + MAGE + MHISP, data = bdclean, family = binomial)
+summary(model2)
 
-ps <- predict(model1, type="response") #change to binary outomce 
+ps <- predict(model2, type="response") #change to binary outomce 
 predict_set <- rbinom(length(ps),1,prob = ps)
 hist(ps)
 
@@ -390,18 +393,18 @@ plot.roc(roc_curve)
 # hist(nonsmokingps)
 
 
-model7 = glm(smoking ~ as.factor(CORES) + MAGE + as.factor(MRACER) + as.factor(MHISP_new) + as.factor(MRACER)*MAGE + as.factor(MHISP_new)*as.factor(MRACER), data = bdclean, family = binomial)
+model7 = glm(smoking ~ as.factor(CORES) + MAGE + as.factor(MRACER) + as.factor(MHISP) + as.factor(MRACER)*MAGE + as.factor(MHISP)*as.factor(MRACER), data = bdclean, family = binomial)
 summary(model7)
 
-ps <- predict(model7, type="response")
-predict_set <- rbinom(length(ps),1,prob = ps)
+ps7 <- predict(model7, type="response")
+predict_set <- rbinom(length(ps7),1,prob = ps7)
 
 auc(bdclean$smoking, predict_set)
 roc_curve <- roc(bdclean$smoking, predict_set)
 plot.roc(roc_curve)
 
-overlap_ind <- which(ps < max(smokingps) & ps > min(smokingps))
-ps_overlap = ps[overlap_ind]
+overlap_ind <- which(ps7 < max(smokingps) & ps7 > min(smokingps))
+ps_overlap = ps7[overlap_ind]
 
 bdclean_overlap = bdclean[overlap_ind,]
 
@@ -424,12 +427,24 @@ fisher.test(bdclean_overlap$MHISP[which(blocks==2)],bdclean_overlap$smoking[whic
 fisher.test(bdclean_overlap$MHISP[which(blocks==3)],bdclean_overlap$smoking[which(blocks==3)], simulate.p.value = T)
 fisher.test(bdclean_overlap$MHISP[which(blocks==4)],bdclean_overlap$smoking[which(blocks==4)], simulate.p.value = T)
 fisher.test(bdclean_overlap$MHISP[which(blocks==5)],bdclean_overlap$smoking[which(blocks==5)], simulate.p.value = T)
-
-
-
-
-
 ```
 
+# Stage 2 Option 1 Stratification
 
-smoking ~ GEST_C + GEST_C^2 + MAGE_center + as.factor(CORES) + as.factor(PARITY_new) + as.factor(PLUR_new) + as.factor(MRACER_new) + as.factor(MHISP_new) -> 0.5417 :(
+```{r}
+model.form.final <- formula(smoking ~ as.factor(CORES) + MAGE + as.factor(MRACER) + as.factor(MHISP_new) + as.factor(MRACER)*MAGE + as.factor(MHISP_new)*as.factor(MRACER))
+
+stra.out <- matchit(model.form.final, data = bdclean, method = "subclass", subclass = 5)
+summary(stra.out)
+```
+
+```{r}
+z.out <- zelig(BWTG ~ male + PARITY + PLUR + MAGE + distance, 
+               data = match.data(stra.out, "control"), 
+               model = "ls", by = "subclass")
+
+x.out <- setx(z.out, data = match.data(stra.out, "treat"), fn = NULL, cond = TRUE)
+s.out <- sim(z.out, x = x.out)
+summary(s.out)
+```
+
