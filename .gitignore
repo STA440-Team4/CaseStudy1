@@ -5,6 +5,7 @@
 *.Rapp.history
 *.dat
 *.Rproj
+*.RData
 
 # Packages #
 ############
